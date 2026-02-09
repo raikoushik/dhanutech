@@ -11,6 +11,16 @@
         const canvas = document.createElement('canvas');
         canvas.className = 'bee-particle-canvas github-style';
 
+        const flowers = document.createElement('div');
+        flowers.className = 'bee-flower-field';
+        const flowerSpots = [0.08, 0.22, 0.36, 0.5, 0.64, 0.78, 0.9].map((x, i) => {
+            const f = document.createElement('div');
+            f.className = `bee-mini-flower flower-${i % 3}`;
+            f.innerHTML = '<span class="c"></span>';
+            flowers.appendChild(f);
+            return { x, y: 0.84 + (i % 2 ? 0.04 : 0), el: f };
+        });
+
         const bee = document.createElement('button');
         bee.type = 'button';
         bee.className = 'bee-assistant github-style';
@@ -33,25 +43,16 @@
                     </radialGradient>
                 </defs>
 
-                <!-- thin translucent wings -->
                 <ellipse class="bee-wing wing-left" cx="122" cy="48" rx="15" ry="28" fill="url(#rb_w)" transform="rotate(-18 122 48)"/>
                 <ellipse class="bee-wing wing-right" cx="147" cy="56" rx="14" ry="24" fill="url(#rb_w)" transform="rotate(10 147 56)"/>
-
-                <!-- realistic body volume -->
                 <ellipse cx="101" cy="96" rx="58" ry="41" fill="url(#rb_y)" stroke="#2a1d17" stroke-width="3.5"/>
                 <ellipse cx="83" cy="81" rx="35" ry="27" fill="url(#rb_dark)"/>
-
-                <!-- natural stripe curvature -->
                 <path d="M47 95 C74 84 118 84 145 95 L144 103 C118 96 74 96 48 104 Z" fill="#2a1d17"/>
                 <path d="M52 112 C80 101 122 103 149 116 L148 124 C122 115 80 114 53 122 Z" fill="#2a1d17"/>
-
-                <!-- subtle fur tips -->
                 <g fill="#e7b52f" opacity="0.85">
                     <path d="M57 63 l4 -7 l4 7z"/><path d="M67 58 l4 -7 l4 7z"/><path d="M77 55 l4 -6 l4 7z"/>
                     <path d="M88 54 l4 -6 l4 7z"/><path d="M98 55 l4 -6 l4 7z"/>
                 </g>
-
-                <!-- calm trustworthy eyes -->
                 <ellipse cx="78" cy="83" rx="9" ry="10" fill="#fff"/>
                 <ellipse cx="100" cy="85" rx="8" ry="9" fill="#fff"/>
                 <ellipse cx="78" cy="84" rx="5.2" ry="6.1" fill="#111827"/>
@@ -61,13 +62,9 @@
                 <path d="M70 75 Q77 71 84 75" stroke="#1f2937" stroke-width="2.2" fill="none" stroke-linecap="round"/>
                 <path d="M92 77 Q99 73 106 77" stroke="#1f2937" stroke-width="2.1" fill="none" stroke-linecap="round"/>
                 <path d="M82 95 Q89 100 96 95" stroke="#7c2d12" stroke-width="2.3" fill="none" stroke-linecap="round"/>
-
-                <!-- legs -->
                 <ellipse cx="74" cy="124" rx="4.8" ry="8" fill="#2a1d17"/>
                 <ellipse cx="94" cy="129" rx="4.8" ry="8" fill="#2a1d17"/>
                 <ellipse cx="113" cy="124" rx="4.8" ry="8" fill="#2a1d17"/>
-
-                <!-- antenna -->
                 <path d="M78 66 Q70 45 56 38" stroke="#2a1d17" stroke-width="2.4" fill="none"/>
                 <path d="M98 67 Q99 46 112 37" stroke="#2a1d17" stroke-width="2.4" fill="none"/>
                 <ellipse cx="55" cy="37" rx="3.8" ry="3" fill="#2a1d17"/>
@@ -78,6 +75,7 @@
         const tip = document.createElement('aside');
         tip.className = 'bee-tooltip github-style';
 
+        document.body.appendChild(flowers);
         document.body.appendChild(canvas);
         document.body.appendChild(bee);
         document.body.appendChild(tip);
@@ -94,6 +92,10 @@
             canvas.style.width = `${window.innerWidth}px`;
             canvas.style.height = `${window.innerHeight}px`;
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            flowerSpots.forEach((f) => {
+                f.el.style.left = `${Math.round(window.innerWidth * f.x)}px`;
+                f.el.style.top = `${Math.round(window.innerHeight * f.y)}px`;
+            });
         }
 
         function showTip(force) {
@@ -108,7 +110,25 @@
         }
 
         function emit(x, y) {
-            particles.push({ x, y, vx: (Math.random() - 0.5) * 0.2, vy: -0.22, a: 0.8, r: 2 + Math.random() * 2 });
+            particles.push({
+                x, y,
+                vx: (Math.random() - 0.5) * 0.24,
+                vy: -0.16 - Math.random() * 0.18,
+                a: 0.9,
+                r: 1.8 + Math.random() * 2.2,
+                heart: Math.random() < 0.5
+            });
+        }
+
+        function drawHeart(p) {
+            const s = p.r * 1.4;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.bezierCurveTo(p.x + s, p.y - s, p.x + s * 1.8, p.y + s * 0.8, p.x, p.y + s * 1.7);
+            ctx.bezierCurveTo(p.x - s * 1.8, p.y + s * 0.8, p.x - s, p.y - s, p.x, p.y);
+            ctx.closePath();
+            ctx.fillStyle = `rgba(251,113,133,${p.a})`;
+            ctx.fill();
         }
 
         function drawParticles() {
@@ -117,16 +137,43 @@
                 const p = particles[i];
                 p.x += p.vx;
                 p.y += p.vy;
-                p.a -= 0.02;
+                p.a -= 0.016;
                 if (p.a <= 0) {
                     particles.splice(i, 1);
                     continue;
                 }
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(250, 204, 21, ${p.a})`;
-                ctx.fill();
+
+                if (p.heart) {
+                    drawHeart(p);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(250,204,21,${p.a})`;
+                    ctx.fill();
+                }
             }
+        }
+
+        function parseLuminance(color) {
+            const m = color && color.match(/rgba?\(([^)]+)\)/);
+            if (!m) return 1;
+            const [r, g, b] = m[1].split(',').slice(0, 3).map((n) => Number.parseFloat(n.trim()) / 255);
+            return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        }
+
+        function updateContrastMode(x, y) {
+            const el = document.elementFromPoint(Math.max(0, Math.min(window.innerWidth - 1, x)), Math.max(0, Math.min(window.innerHeight - 1, y)));
+            let node = el;
+            let lum = 1;
+            while (node && node !== document.documentElement) {
+                const bg = getComputedStyle(node).backgroundColor;
+                if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+                    lum = parseLuminance(bg);
+                    break;
+                }
+                node = node.parentElement;
+            }
+            bee.classList.toggle('on-dark', lum < 0.45);
         }
 
         const state = {
@@ -135,24 +182,36 @@
             targetX: window.innerWidth - 120,
             targetY: window.innerHeight - 170,
             t: 0,
-            angle: 0
+            z: 0,
+            angle: 0,
+            loop: 0
         };
 
         gsap.ticker.add(() => {
-            state.t += 0.012;
-            const ox = Math.sin(state.t * 1.4) * 18;
-            const oy = Math.cos(state.t * 1.9) * 12;
+            state.t += 0.011;
+            const ox = Math.sin(state.t * 1.15) * 20;
+            const oy = Math.cos(state.t * 1.73) * 14;
+            state.z = (Math.sin(state.t * 0.63) + 1) * 0.5; // 4D feel: x,y,z over time
 
-            state.x += ((state.targetX + ox) - state.x) * 0.08;
-            state.y += ((state.targetY + oy) - state.y) * 0.08;
-            state.angle += ((ox * 0.25) - state.angle) * 0.12;
+            state.x += ((state.targetX + ox) - state.x) * 0.072;
+            state.y += ((state.targetY + oy) - state.y) * 0.072;
+            state.angle += ((ox * 0.22) - state.angle) * 0.12;
 
-            bee.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) rotate(${state.angle}deg)`;
+            const loopY = Math.sin(state.loop * Math.PI * 2) * 26;
+            const scale = 0.86 + state.z * 0.28;
+            bee.style.transform = `translate3d(${state.x}px, ${state.y - loopY}px, 0) rotate(${state.angle}deg) scale(${scale})`;
             tip.style.left = `${Math.max(12, state.x - 210)}px`;
-            tip.style.top = `${Math.max(80, state.y - 10)}px`;
+            tip.style.top = `${Math.max(70, state.y - 10)}px`;
 
-            if (Math.random() < 0.45) emit(state.x + 38, state.y + 58);
+            updateContrastMode(state.x + 42, state.y + 42);
+
+            if (Math.random() < 0.58) emit(state.x + 38, state.y + 58);
             drawParticles();
+
+            flowerSpots.forEach((f) => {
+                const d = Math.hypot(state.x - window.innerWidth * f.x, state.y - window.innerHeight * f.y);
+                f.el.classList.toggle('is-bloom', d < 130);
+            });
         });
 
         function moveToCurrentSection() {
@@ -162,7 +221,10 @@
             let min = Infinity;
             sections.forEach((s) => {
                 const d = Math.abs(s.offsetTop - mid);
-                if (d < min) { min = d; nearest = s; }
+                if (d < min) {
+                    min = d;
+                    nearest = s;
+                }
             });
             if (!nearest) return;
             const rect = nearest.getBoundingClientRect();
@@ -172,7 +234,7 @@
 
         bee.addEventListener('mouseenter', () => {
             showTip();
-            gsap.to(state, { duration: 0.7, t: state.t + 2.5, ease: 'power2.inOut' });
+            gsap.to(state, { duration: 0.75, loop: 1, yoyo: true, repeat: 1, ease: 'power2.inOut' });
         });
 
         bee.addEventListener('click', () => showTip());
