@@ -3,291 +3,307 @@
         return;
     }
 
-    const suggestions = [
-        { text: 'Need a new laptop? Explore our latest products.', href: 'products.html', cta: 'View Products' },
-        { text: 'Get quick support and pricing on WhatsApp.', href: 'https://wa.me/919591555095', cta: 'Chat on WhatsApp' },
-        { text: 'Build your dream PC with our customization service.', href: 'customization.html', cta: 'Customize Now' },
-        { text: 'Discover CCTV, power backup, and electrical services.', href: 'services.html', cta: 'See Services' },
-        { text: 'Read useful tech tips and updates in our blog.', href: 'blog.html', cta: 'Read Blog' },
-        { text: 'Need a custom website? Ask us about Web Design services.', href: 'services.html', cta: 'Web Design' }
-    ];
+    function initBee() {
+        const suggestions = [
+            { text: 'Check our latest laptops and systems.', href: 'products.html', cta: 'View Products' },
+            { text: 'Need customized web design for your business?', href: 'services.html', cta: 'Web Design' },
+            { text: 'Ask for CCTV, power backup, and electrical solutions.', href: 'services.html', cta: 'See Services' },
+            { text: 'Talk to us instantly on WhatsApp.', href: 'https://wa.me/919591555095', cta: 'Chat Now' }
+        ];
 
-    const flowerSpots = [
-        { x: 0.08, y: 0.8 }, { x: 0.18, y: 0.88 }, { x: 0.3, y: 0.82 },
-        { x: 0.44, y: 0.9 }, { x: 0.56, y: 0.8 }, { x: 0.7, y: 0.88 }, { x: 0.84, y: 0.82 }
-    ];
+        const env = document.createElement('div');
+        env.className = 'bee-env';
+        env.innerHTML = `
+            <div class="bee-sun-flare" aria-hidden="true"></div>
+            <div class="bee-tech-grass" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+        `;
 
-    const sky = document.createElement('div');
-    sky.className = 'bee-sky-glow';
+        const canvas = document.createElement('canvas');
+        canvas.className = 'bee-particle-canvas';
 
-    const garden = document.createElement('div');
-    garden.className = 'bee-garden';
+        const bee = document.createElement('button');
+        bee.type = 'button';
+        bee.className = 'bee-assistant';
+        bee.setAttribute('aria-label', 'Dhanu Tech Bee mascot');
+        bee.innerHTML = `
+            <svg class="bee-body" viewBox="0 0 260 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                <defs>
+                    <radialGradient id="beeAura" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#fde68a" stop-opacity="0.58"/>
+                        <stop offset="100%" stop-color="#fde68a" stop-opacity="0"/>
+                    </radialGradient>
+                    <linearGradient id="beeGold" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#fff8b8"/>
+                        <stop offset="50%" stop-color="#facc15"/>
+                        <stop offset="100%" stop-color="#eab308"/>
+                    </linearGradient>
+                    <radialGradient id="beeFurShade" cx="45%" cy="30%" r="75%">
+                        <stop offset="0%" stop-color="#43302b"/>
+                        <stop offset="100%" stop-color="#1f1715"/>
+                    </radialGradient>
+                    <radialGradient id="wingSSS" cx="50%" cy="40%" r="80%">
+                        <stop offset="0%" stop-color="#f0fdff" stop-opacity="0.82"/>
+                        <stop offset="70%" stop-color="#99f6e4" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#67e8f9" stop-opacity="0.06"/>
+                    </radialGradient>
+                </defs>
 
-    const trailLayer = document.createElement('div');
-    trailLayer.className = 'bee-trail-layer';
+                <circle cx="130" cy="122" r="88" fill="url(#beeAura)" class="bee-aura"/>
+                <ellipse class="bee-wing wing-left" cx="88" cy="79" rx="22" ry="32" fill="url(#wingSSS)"/>
+                <ellipse class="bee-wing wing-right" cx="171" cy="79" rx="22" ry="32" fill="url(#wingSSS)"/>
 
-    const shadow = document.createElement('div');
-    shadow.className = 'bee-shadow';
+                <ellipse cx="130" cy="132" rx="64" ry="52" fill="url(#beeGold)"/>
+                <ellipse cx="130" cy="132" rx="64" ry="52" fill="none" stroke="#111827" stroke-width="7"/>
+                <ellipse cx="130" cy="102" rx="47" ry="39" fill="url(#beeFurShade)"/>
 
-    const nest = document.createElement('div');
-    nest.className = 'bee-nest';
+                <path d="M78 126 C100 116 160 116 182 126 L182 136 C160 130 100 130 78 136 Z" fill="#0f172a" opacity="0.95"/>
+                <path d="M78 146 C100 136 160 136 182 146 L182 156 C160 150 100 150 78 156 Z" fill="#0f172a" opacity="0.95"/>
 
-    const bee = document.createElement('button');
-    bee.type = 'button';
-    bee.className = 'bee-assistant';
-    bee.setAttribute('aria-label', 'Interactive bumblebee guide mascot');
-    bee.innerHTML = `
-        <svg class="bee-body" viewBox="0 0 260 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
-            <defs>
-                <radialGradient id="beeAura" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#fde68a" stop-opacity="0.58"/>
-                    <stop offset="100%" stop-color="#fde68a" stop-opacity="0"/>
-                </radialGradient>
-                <linearGradient id="beeGold" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#fff8b8"/>
-                    <stop offset="50%" stop-color="#facc15"/>
-                    <stop offset="100%" stop-color="#eab308"/>
-                </linearGradient>
-                <radialGradient id="beeFurShade" cx="45%" cy="30%" r="75%">
-                    <stop offset="0%" stop-color="#43302b"/>
-                    <stop offset="100%" stop-color="#1f1715"/>
-                </radialGradient>
-                <radialGradient id="wingSSS" cx="50%" cy="40%" r="80%">
-                    <stop offset="0%" stop-color="#f0fdff" stop-opacity="0.84"/>
-                    <stop offset="70%" stop-color="#99f6e4" stop-opacity="0.32"/>
-                    <stop offset="100%" stop-color="#67e8f9" stop-opacity="0.08"/>
-                </radialGradient>
-            </defs>
+                <path d="M102 95 Q111 90 120 95" stroke="#111827" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+                <path d="M140 95 Q149 90 158 95" stroke="#111827" stroke-width="3.2" fill="none" stroke-linecap="round"/>
 
-            <circle cx="130" cy="122" r="88" fill="url(#beeAura)" class="bee-aura"/>
+                <circle cx="114" cy="109" r="12.5" fill="#fff"/>
+                <circle cx="147" cy="109" r="12.5" fill="#fff"/>
+                <circle cx="114" cy="110" r="6.5" fill="#0f172a"/>
+                <circle cx="147" cy="110" r="6.5" fill="#0f172a"/>
+                <circle cx="116.6" cy="106" r="1.8" fill="#fff"/>
+                <circle cx="149.6" cy="106" r="1.8" fill="#fff"/>
 
-            <ellipse class="bee-wing wing-left" cx="88" cy="79" rx="24" ry="34" fill="url(#wingSSS)"/>
-            <ellipse class="bee-wing wing-right" cx="171" cy="79" rx="24" ry="34" fill="url(#wingSSS)"/>
+                <path d="M116 128 Q130 138 144 128" stroke="#7c2d12" stroke-width="4" fill="none" stroke-linecap="round"/>
+                <g class="bee-fur-strands" stroke="#2c211d" stroke-width="1.2" stroke-linecap="round" opacity="0.55">
+                    <path d="M107 88 l-2 -6"/><path d="M114 86 l-1 -7"/><path d="M121 85 l0 -7"/>
+                    <path d="M128 84 l1 -7"/><path d="M135 84 l2 -6"/><path d="M142 85 l2 -6"/>
+                </g>
 
-            <ellipse cx="130" cy="132" rx="64" ry="52" fill="url(#beeGold)"/>
-            <ellipse cx="130" cy="132" rx="64" ry="52" fill="none" stroke="#111827" stroke-width="7"/>
-            <ellipse cx="130" cy="102" rx="47" ry="39" fill="url(#beeFurShade)"/>
-
-            <path d="M78 126 C100 116 160 116 182 126 L182 136 C160 130 100 130 78 136 Z" fill="#0f172a" opacity="0.95"/>
-            <path d="M78 146 C100 136 160 136 182 146 L182 156 C160 150 100 150 78 156 Z" fill="#0f172a" opacity="0.95"/>
-
-            <path d="M102 95 Q111 90 120 95" stroke="#111827" stroke-width="3.3" fill="none" stroke-linecap="round"/>
-            <path d="M140 95 Q149 90 158 95" stroke="#111827" stroke-width="3.3" fill="none" stroke-linecap="round"/>
-
-            <circle cx="114" cy="109" r="12.5" fill="#fff"/>
-            <circle cx="147" cy="109" r="12.5" fill="#fff"/>
-            <circle cx="114" cy="110" r="6.7" fill="#0f172a"/>
-            <circle cx="147" cy="110" r="6.7" fill="#0f172a"/>
-            <circle cx="116.6" cy="106" r="1.8" fill="#fff"/>
-            <circle cx="149.6" cy="106" r="1.8" fill="#fff"/>
-
-            <ellipse cx="102" cy="120" rx="6" ry="4" fill="#fb7185" opacity="0.35"/>
-            <ellipse cx="159" cy="120" rx="6" ry="4" fill="#fb7185" opacity="0.35"/>
-            <path d="M116 128 Q130 138 144 128" stroke="#7c2d12" stroke-width="4" fill="none" stroke-linecap="round"/>
-
-            <g class="bee-fur-strands" stroke="#2c211d" stroke-width="1.2" stroke-linecap="round" opacity="0.58">
-                <path d="M106 88 l-2 -6"/>
-                <path d="M113 86 l-1 -7"/>
-                <path d="M120 85 l0 -7"/>
-                <path d="M127 84 l1 -7"/>
-                <path d="M134 84 l2 -6"/>
-                <path d="M141 85 l2 -6"/>
-            </g>
-
-            <path d="M118 74 Q109 40 90 31" stroke="#1f2937" stroke-width="3.5" fill="none"/>
-            <path d="M142 74 Q151 40 170 31" stroke="#1f2937" stroke-width="3.5" fill="none"/>
-            <circle cx="88" cy="30" r="7.5" fill="#f59e0b"/>
-            <circle cx="172" cy="30" r="7.5" fill="#f59e0b"/>
-        </svg>
-    `;
-
-    const tooltip = document.createElement('aside');
-    tooltip.className = 'bee-tooltip';
-
-    document.body.appendChild(sky);
-    document.body.appendChild(garden);
-    document.body.appendChild(trailLayer);
-    document.body.appendChild(nest);
-    document.body.appendChild(shadow);
-    document.body.appendChild(bee);
-    document.body.appendChild(tooltip);
-
-    flowerSpots.forEach((spot, i) => {
-        const flower = document.createElement('div');
-        flower.className = `bee-flower flower-${i % 4}`;
-        flower.innerHTML = `
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <circle cx="50" cy="50" r="14" fill="#f59e0b"/>
-                <ellipse cx="50" cy="22" rx="11" ry="18" fill="#f472b6"/>
-                <ellipse cx="50" cy="78" rx="11" ry="18" fill="#f472b6"/>
-                <ellipse cx="22" cy="50" rx="18" ry="11" fill="#f472b6"/>
-                <ellipse cx="78" cy="50" rx="18" ry="11" fill="#f472b6"/>
-                <ellipse cx="31" cy="31" rx="12" ry="9" fill="#f9a8d4"/>
-                <ellipse cx="69" cy="31" rx="12" ry="9" fill="#f9a8d4"/>
+                <path d="M118 74 Q109 40 90 31" stroke="#1f2937" stroke-width="3.5" fill="none"/>
+                <path d="M142 74 Q151 40 170 31" stroke="#1f2937" stroke-width="3.5" fill="none"/>
+                <circle cx="88" cy="30" r="7.5" fill="#f59e0b"/><circle cx="172" cy="30" r="7.5" fill="#f59e0b"/>
             </svg>
         `;
-        spot.element = flower;
-        document.body.appendChild(flower);
-    });
 
-    let x = window.innerWidth * 0.35;
-    let y = window.innerHeight * 0.35;
-    let phase = 0;
-    let centerX = x;
-    let centerY = y;
-    let targetCenterX = centerX;
-    let targetCenterY = centerY;
-    let targetHoldUntil = 0;
-    let scrollBoost = 0;
-    let mouseX = x;
-    let mouseY = y;
-    let idleMode = false;
-    let suggestionIndex = 0;
-    let hideTipTimer;
-    let nestX = 110;
-    let nestY = window.innerHeight - 105;
+        const tooltip = document.createElement('aside');
+        tooltip.className = 'bee-tooltip';
 
-    function positionScene() {
-        nestX = Math.max(90, Math.min(window.innerWidth - 130, window.innerWidth * 0.12));
-        nestY = window.innerHeight - 105;
-        nest.style.left = `${nestX}px`;
-        nest.style.top = `${nestY}px`;
-        flowerSpots.forEach((spot) => {
-            spot.element.style.left = `${Math.round(window.innerWidth * spot.x)}px`;
-            spot.element.style.top = `${Math.round(window.innerHeight * spot.y)}px`;
-        });
-    }
+        document.body.appendChild(env);
+        document.body.appendChild(canvas);
+        document.body.appendChild(bee);
+        document.body.appendChild(tooltip);
 
-    function showSuggestion(forceIndex) {
-        if (typeof forceIndex === 'number') {
-            suggestionIndex = forceIndex % suggestions.length;
+        const ctx = canvas.getContext('2d');
+        const particles = [];
+        let suggestionIndex = 0;
+        let tipTimer;
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = Math.floor(window.innerWidth * dpr);
+            canvas.height = Math.floor(window.innerHeight * dpr);
+            canvas.style.width = `${window.innerWidth}px`;
+            canvas.style.height = `${window.innerHeight}px`;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
-        const item = suggestions[suggestionIndex];
-        suggestionIndex = (suggestionIndex + 1) % suggestions.length;
-        const external = item.href.startsWith('http');
-        tooltip.innerHTML = `<p>${item.text}</p><a href="${item.href}" class="bee-tooltip-link" ${external ? 'target="_blank" rel="noopener noreferrer"' : ''}>${item.cta}</a>`;
-        tooltip.classList.add('show');
-        clearTimeout(hideTipTimer);
-        hideTipTimer = setTimeout(() => tooltip.classList.remove('show'), 4200);
-    }
 
-    function spawnLoveParticle(speed) {
-        const p = document.createElement('span');
-        p.className = Math.random() < 0.48 ? 'bee-sparkle heart' : 'bee-sparkle';
-        p.style.left = `${x + 26 + Math.random() * 10}px`;
-        p.style.top = `${y + 40 + Math.random() * 8}px`;
-        p.style.setProperty('--sparkle-size', `${4 + Math.min(9, speed * 14)}px`);
-        trailLayer.appendChild(p);
-        p.addEventListener('animationend', () => p.remove());
-    }
+        function addParticle(x, y, isHeart = false) {
+            particles.push({
+                x,
+                y,
+                vx: (Math.random() - 0.5) * 0.35,
+                vy: -0.25 - Math.random() * 0.45,
+                life: 1,
+                size: 3 + Math.random() * 4,
+                heart: isHeart,
+                hue: isHeart ? 345 : 45
+            });
+        }
 
-    function pickIdleCenter(now) {
-        targetCenterX = Math.random() < 0.5 ? Math.max(90, Math.min(window.innerWidth - 90, mouseX)) : nestX;
-        targetCenterY = Math.random() < 0.5 ? Math.max(95, Math.min(window.innerHeight - 130, mouseY - 35)) : nestY;
-        targetHoldUntil = now + 2200;
-    }
+        function drawHeart(p) {
+            const s = p.size;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y + s * 0.28);
+            ctx.bezierCurveTo(p.x + s * 0.9, p.y - s * 0.72, p.x + s * 1.6, p.y + s * 0.95, p.x, p.y + s * 1.75);
+            ctx.bezierCurveTo(p.x - s * 1.6, p.y + s * 0.95, p.x - s * 0.9, p.y - s * 0.72, p.x, p.y + s * 0.28);
+            ctx.closePath();
+            ctx.fillStyle = `hsla(${p.hue}, 95%, 72%, ${p.life * 0.8})`;
+            ctx.fill();
+        }
 
-    function updateNearbyFlowers() {
-        flowerSpots.forEach((spot) => {
-            const fx = window.innerWidth * spot.x;
-            const fy = window.innerHeight * spot.y;
-            const d = Math.hypot(fx - x, fy - y);
-            if (d < 150) {
-                spot.element.classList.add('is-visited');
-            } else {
-                spot.element.classList.remove('is-visited');
+        function drawParticle(p) {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size * 0.5, 0, Math.PI * 2);
+            ctx.fillStyle = `hsla(${p.hue}, 95%, 70%, ${p.life * 0.85})`;
+            ctx.shadowColor = `hsla(${p.hue}, 95%, 70%, ${p.life * 0.75})`;
+            ctx.shadowBlur = 10;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        function renderParticles() {
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            for (let i = particles.length - 1; i >= 0; i -= 1) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= 0.018;
+                p.size *= 0.992;
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+                if (p.heart) {
+                    drawHeart(p);
+                } else {
+                    drawParticle(p);
+                }
             }
-        });
-    }
+        }
 
-    function animate(now) {
-        phase += 0.014 + scrollBoost * 0.0015;
-        scrollBoost *= 0.9;
+        function showSuggestion(forceIndex) {
+            if (typeof forceIndex === 'number') suggestionIndex = forceIndex % suggestions.length;
+            const item = suggestions[suggestionIndex];
+            suggestionIndex = (suggestionIndex + 1) % suggestions.length;
+            const external = item.href.startsWith('http');
+            tooltip.innerHTML = `<p>${item.text}</p><a href="${item.href}" class="bee-tooltip-link" ${external ? 'target="_blank" rel="noopener noreferrer"' : ''}>${item.cta}</a>`;
+            tooltip.classList.add('show');
+            clearTimeout(tipTimer);
+            tipTimer = setTimeout(() => tooltip.classList.remove('show'), 3800);
+        }
 
-        if (idleMode) {
-            if (now > targetHoldUntil) {
-                pickIdleCenter(now);
+        const motion = { t: 0, x: window.innerWidth * 0.35, y: window.innerHeight * 0.35, angle: 0 };
+        let scrollBoost = 0;
+        let mouseX = motion.x;
+        let mouseY = motion.y;
+        let hoverLoop = false;
+
+        function cubicBezier(p0, p1, p2, p3, u) {
+            const k = 1 - u;
+            return (
+                k * k * k * p0 +
+                3 * k * k * u * p1 +
+                3 * k * u * u * p2 +
+                u * u * u * p3
+            );
+        }
+
+        function pathPoint(t, targetX, targetY) {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const p0x = w * 0.22 + Math.sin(t * 0.6) * 26;
+            const p0y = h * 0.34 + Math.cos(t * 0.7) * 22;
+            const p1x = w * 0.78 + Math.cos(t * 0.42) * 36;
+            const p1y = h * 0.24 + Math.sin(t * 0.45) * 24;
+            const p2x = w * 0.74 + Math.sin(t * 0.54) * 32;
+            const p2y = h * 0.66 + Math.cos(t * 0.5) * 24;
+            const p3x = w * 0.24 + Math.cos(t * 0.47) * 34;
+            const p3y = h * 0.62 + Math.sin(t * 0.52) * 24;
+
+            const u = (Math.sin(t * 0.38) + 1) * 0.5;
+            const baseX = cubicBezier(p0x, p1x, p2x, p3x, u);
+            const baseY = cubicBezier(p0y, p1y, p2y, p3y, u);
+
+            const drift = scrollBoost * 22;
+            return {
+                x: baseX + (targetX - baseX) * 0.1 + drift,
+                y: baseY + (targetY - baseY) * 0.1 - drift * 0.2 + Math.sin(t * 2.2) * 8
+            };
+        }
+
+        function loopTheLoop() {
+            if (hoverLoop) return;
+            hoverLoop = true;
+            gsap.to(motion, {
+                duration: 1.05,
+                ease: 'power2.inOut',
+                t: motion.t + 1.25,
+                onUpdate: () => {
+                    motion.angle += 0.28;
+                },
+                onComplete: () => {
+                    hoverLoop = false;
+                }
+            });
+        }
+
+        gsap.ticker.add(() => {
+            motion.t += 0.012 + scrollBoost * 0.0018;
+            scrollBoost *= 0.9;
+
+            const targetX = mouseX + Math.sin(motion.t * 0.8) * 30;
+            const targetY = mouseY - 35 + Math.cos(motion.t * 0.9) * 16;
+            const p = pathPoint(motion.t, targetX, targetY);
+
+            const dx = p.x - motion.x;
+            const dy = p.y - motion.y;
+            motion.x += dx * 0.08;
+            motion.y += dy * 0.08;
+
+            const heading = Math.atan2(dy, dx) * (180 / Math.PI);
+            motion.angle += (heading - motion.angle) * 0.1;
+
+            bee.style.transform = `translate3d(${motion.x}px, ${motion.y}px, 0) rotate(${motion.angle * 0.12}deg)`;
+            tooltip.style.left = `${Math.min(window.innerWidth - 270, motion.x + 54)}px`;
+            tooltip.style.top = `${Math.max(84, motion.y - 22)}px`;
+
+            document.documentElement.style.setProperty('--bee-x', `${motion.x}px`);
+            document.documentElement.style.setProperty('--bee-y', `${motion.y}px`);
+
+            if (Math.hypot(dx, dy) > 1.2) {
+                addParticle(motion.x + 25, motion.y + 42, Math.random() < 0.45);
+                if (Math.random() < 0.45) addParticle(motion.x + 22, motion.y + 38, false);
             }
-        } else {
-            targetCenterX = window.innerWidth * 0.5 + Math.sin(phase * 0.35) * window.innerWidth * 0.18;
-            targetCenterY = window.innerHeight * 0.4 + Math.cos(phase * 0.28) * window.innerHeight * 0.14;
-        }
 
-        centerX += (targetCenterX - centerX) * 0.014;
-        centerY += (targetCenterY - centerY) * 0.014;
+            flowerSpots.forEach((spot) => {
+                const fx = window.innerWidth * spot.x;
+                const fy = window.innerHeight * spot.y;
+                const d = Math.hypot(fx - motion.x, fy - motion.y);
+                spot.element.classList.toggle('is-visited', d < 150);
+            });
 
-        const fig8x = Math.sin(phase * 1.05) * 96;
-        const fig8y = Math.sin(phase * 2.1) * 52;
-        const microX = Math.sin(phase * 5.4) * 4;
-        const microY = Math.cos(phase * 4.7) * 3;
+            renderParticles();
+        });
 
-        const nx = centerX + fig8x + microX;
-        const ny = centerY + fig8y + microY;
+        bee.addEventListener('mouseenter', () => {
+            showSuggestion();
+            loopTheLoop();
+        });
+        bee.addEventListener('click', () => showSuggestion());
 
-        const dx = nx - x;
-        const dy = ny - y;
-        const speed = Math.hypot(dx, dy) * 0.025;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        }, { passive: true });
 
-        x += dx * 0.082;
-        y += dy * 0.082;
+        window.addEventListener('scroll', () => {
+            const sections = [...document.querySelectorAll('section, .service-section, .page-header')];
+            const center = window.scrollY + window.innerHeight * 0.5;
+            let nearest = null;
+            let min = Infinity;
+            sections.forEach((el) => {
+                const top = el.offsetTop;
+                const d = Math.abs(top - center);
+                if (d < min) { min = d; nearest = el; }
+            });
+            if (nearest) {
+                mouseY = nearest.offsetTop - window.scrollY + nearest.offsetHeight * 0.35;
+            }
+            scrollBoost = Math.min(3.6, scrollBoost + 0.6);
+        }, { passive: true });
 
-        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-        bee.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${angle * 0.1}deg)`;
+        window.addEventListener('resize', resizeCanvas);
 
-        shadow.style.transform = `translate3d(${x + 28}px, ${Math.min(window.innerHeight - 52, y + 92)}px, 0) scale(${0.75 + Math.min(0.28, speed * 1.4)})`;
-        shadow.style.opacity = `${0.15 + Math.min(0.25, speed * 0.9)}`;
-
-        tooltip.style.left = `${Math.min(window.innerWidth - 270, x + 56)}px`;
-        tooltip.style.top = `${Math.max(84, y - 24)}px`;
-
-        document.documentElement.style.setProperty('--bee-x', `${x}px`);
-        document.documentElement.style.setProperty('--bee-y', `${y}px`);
-
-        const wingSkew = Math.min(1.15, 0.82 + speed * 0.9);
-        bee.style.setProperty('--wing-squash', wingSkew.toFixed(3));
-
-        if (speed > 0.1) {
-            spawnLoveParticle(speed);
-        }
-
-        updateNearbyFlowers();
-        requestAnimationFrame(animate);
+        resizeCanvas();
+        showSuggestion(0);
+        setInterval(() => showSuggestion(), 9000);
     }
 
-    bee.addEventListener('mouseenter', () => {
-        showSuggestion();
-        idleMode = true;
-        targetHoldUntil = 0;
-    });
-
-    bee.addEventListener('mouseleave', () => {
-        idleMode = false;
-    });
-
-    bee.addEventListener('click', () => {
-        showSuggestion();
-    });
-
-    let idleTimer;
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        idleMode = false;
-        clearTimeout(idleTimer);
-        idleTimer = setTimeout(() => {
-            idleMode = true;
-            targetHoldUntil = 0;
-        }, 2600);
-    }, { passive: true });
-
-    window.addEventListener('scroll', () => {
-        scrollBoost = Math.min(3, scrollBoost + 0.55);
-    }, { passive: true });
-
-    window.addEventListener('resize', positionScene);
-
-    positionScene();
-    showSuggestion(0);
-    requestAnimationFrame(animate);
-    setInterval(() => showSuggestion(), 9000);
+    if (window.gsap) {
+        initBee();
+    } else {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js';
+        script.onload = initBee;
+        document.head.appendChild(script);
+    }
 })();

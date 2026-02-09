@@ -972,3 +972,167 @@ footer {
     0%, 100% { transform: translateX(0) skewX(0deg); }
     50% { transform: translateX(-8px) skewX(1deg); }
 }
+
+/* Dhanu Tech Bee - GSAP premium override */
+.bee-env,
+.bee-particle-canvas,
+.bee-assistant,
+.bee-tooltip,
+.bee-shadow,
+.bee-sky-glow,
+.bee-garden,
+.bee-nest,
+.bee-flower {
+    pointer-events: none;
+}
+
+.bee-assistant,
+.bee-tooltip,
+.bee-particle-canvas,
+.bee-env,
+.bee-shadow,
+.bee-sky-glow,
+.bee-garden,
+.bee-nest,
+.bee-flower {
+    position: fixed;
+}
+
+.bee-env,
+.bee-particle-canvas,
+.bee-sky-glow,
+.bee-garden {
+    inset: 0;
+}
+
+.bee-sky-glow {
+    z-index: 1110;
+    background:
+        radial-gradient(circle at 87% 12%, rgba(251, 191, 36, 0.3) 0%, rgba(251, 191, 36, 0.08) 24%, transparent 44%),
+        radial-gradient(circle at 45% -18%, rgba(224, 242, 254, 0.55) 0%, transparent 60%);
+}
+
+.bee-particle-canvas { z-index: 1440; }
+.bee-assistant {
+    z-index: 1460;
+    width: 92px;
+    height: 92px;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.bee-body {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 12px 16px rgba(15, 23, 42, 0.18)) drop-shadow(0 3px 6px rgba(245, 158, 11, 0.22));
+    animation: beeFloatY 2.8s ease-in-out infinite;
+}
+
+.bee-wing {
+    animation: beeWingVibe 0.17s linear infinite;
+    transform-origin: center;
+}
+
+.bee-fur-strands { animation: furShiver 2.1s ease-in-out infinite; }
+.bee-aura { animation: auraPulse 2.4s ease-in-out infinite; }
+
+.bee-shadow {
+    z-index: 1405;
+    width: 54px;
+    height: 18px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(15,23,42,0.32) 0%, rgba(15,23,42,0.08) 70%, transparent 100%);
+}
+
+.bee-tooltip {
+    z-index: 1470;
+    max-width: 250px;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(6px);
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 0.7rem 0.9rem;
+    box-shadow: 0 10px 24px rgba(15,23,42,0.14);
+    color: #1e293b;
+    font-size: 0.88rem;
+    opacity: 0;
+    transition: opacity .25s ease;
+    pointer-events: auto;
+}
+.bee-tooltip.show { opacity: 1; }
+.bee-tooltip p { margin: 0 0 .55rem; }
+
+.bee-tooltip-link {
+    display: inline-block;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 999px;
+    font-size: .78rem;
+    padding: .28rem .7rem;
+    color: #fff;
+    background: #2563eb;
+}
+
+.bee-garden {
+    z-index: 1150;
+    background:
+      radial-gradient(170px 90px at calc(var(--bee-x, 50vw) + 20px) calc(var(--bee-y, 40vh) + 120px), rgba(250,204,21,0.17), transparent 70%),
+      linear-gradient(to top, rgba(22,163,74,.36), rgba(34,197,94,.08) 45%, transparent 100%);
+}
+
+.bee-garden::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 62px;
+    background: repeating-linear-gradient(90deg, rgba(34,197,94,.82) 0 3px, rgba(22,163,74,.66) 3px 7px);
+    clip-path: polygon(0% 100%,0% 35%,4% 72%,8% 28%,12% 70%,16% 24%,20% 75%,24% 32%,28% 72%,32% 26%,36% 74%,40% 30%,44% 72%,48% 20%,52% 73%,56% 32%,60% 77%,64% 27%,68% 70%,72% 24%,76% 75%,80% 28%,84% 70%,88% 26%,92% 72%,96% 30%,100% 74%,100% 100%);
+    animation: grassWindSoft 5.8s ease-in-out infinite;
+}
+
+.bee-tech-grass { display:none; }
+
+.bee-nest {
+    z-index: 1240;
+    width: 84px;
+    height: 46px;
+    border-radius: 50% 50% 48% 48%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle at 50% 25%, #fde68a 0%, #f59e0b 45%, #b45309 100%);
+    box-shadow: 0 8px 16px rgba(120,53,15,.42);
+}
+
+.bee-flower {
+    z-index: 1230;
+    width: 44px;
+    height: 44px;
+    opacity: 0.95;
+    transition: transform .35s ease, filter .35s ease;
+}
+.bee-flower svg { animation: petalBreathe 2.8s ease-in-out infinite; }
+.bee-flower.is-visited {
+    transform: scale(1.16);
+    filter: brightness(1.1) saturate(1.08) drop-shadow(0 0 10px rgba(251,191,36,.45));
+}
+
+.bee-sparkle { animation: sparkleFadeFine .95s ease-out forwards; }
+
+@keyframes beeWingVibe {
+    0%,100% { transform: rotate(-14deg) scaleX(.98); opacity:.7; }
+    50% { transform: rotate(14deg) scaleX(.88); opacity:.52; }
+}
+@keyframes beeFloatY { 0%,100% { transform: translateY(-2px);} 50% { transform: translateY(2px);} }
+@keyframes furShiver { 0%,100% { opacity:.52;} 50% { opacity:.7;} }
+@keyframes auraPulse { 0%,100% { opacity:.62;} 50% { opacity:.9;} }
+@keyframes petalBreathe { 0%,100% { transform: scale(1) rotate(0deg);} 50% { transform: scale(1.04) rotate(4deg);} }
+@keyframes sparkleFadeFine { 0% { transform: translate3d(0,0,0) scale(1); opacity:.9;} 100% { transform: translate3d(-16px,-22px,0) scale(.22); opacity:0;} }
+@keyframes grassWindSoft { 0%,100% { transform: translateX(0) skewX(0deg);} 50% { transform: translateX(-8px) skewX(1deg);} }
+
+@media (max-width:768px) {
+    .bee-assistant { width: 74px; height: 74px; }
+    .bee-flower { width: 34px; height: 34px; }
+    .bee-tooltip { max-width: 190px; font-size: .81rem; }
+}
