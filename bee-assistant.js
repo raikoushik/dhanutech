@@ -71,7 +71,8 @@
             t: 0,
             angle: 0,
             retargetAt: performance.now() + 1000,
-            paused: false
+            paused: false,
+            rafId: 0
         };
 
         let tipIndex = 0;
@@ -113,7 +114,7 @@
             tip.style.left = `${Math.max(12, Math.min(window.innerWidth - 260, state.x - 240))}px`;
             tip.style.top = `${Math.max(64, state.y - 4)}px`;
 
-            requestAnimationFrame(tick);
+            state.rafId = requestAnimationFrame(tick);
         }
 
         bee.addEventListener('mouseenter', () => {
@@ -124,13 +125,24 @@
             state.paused = false;
         });
         bee.addEventListener('click', () => showTip());
+        bee.addEventListener('focus', () => showTip());
 
         window.addEventListener('resize', retarget, { passive: true });
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                state.paused = true;
+                if (state.rafId) cancelAnimationFrame(state.rafId);
+                state.rafId = 0;
+            } else {
+                state.paused = false;
+                if (!state.rafId) state.rafId = requestAnimationFrame(tick);
+            }
+        });
         setInterval(() => showTip(), 12000);
 
         showTip(0);
         retarget();
-        requestAnimationFrame(tick);
+        state.rafId = requestAnimationFrame(tick);
     }
 
     if (document.readyState === 'loading') {
