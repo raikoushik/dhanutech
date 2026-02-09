@@ -29,15 +29,19 @@
             <ellipse cx="113" cy="124" rx="56" ry="48" fill="none" stroke="#111827" stroke-width="10"/>
             <rect x="69" y="112" width="88" height="14" rx="7" fill="#111827"/>
             <rect x="69" y="133" width="88" height="14" rx="7" fill="#111827"/>
-            <circle cx="92" cy="112" r="12" fill="#fff"/>
-            <circle cx="133" cy="112" r="12" fill="#fff"/>
-            <circle cx="92" cy="113" r="7" fill="#111827"/>
-            <circle cx="133" cy="113" r="7" fill="#111827"/>
-            <circle cx="95" cy="110" r="2" fill="#fff"/>
-            <circle cx="136" cy="110" r="2" fill="#fff"/>
-            <circle cx="79" cy="124" r="8" fill="#FB923C" opacity="0.7"/>
-            <circle cx="145" cy="124" r="8" fill="#FB923C" opacity="0.7"/>
-            <path d="M95 141 Q113 156 131 141" stroke="#7C2D12" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <path d="M82 98 Q92 92 102 98" stroke="#111827" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M124 98 Q134 92 144 98" stroke="#111827" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <circle cx="92" cy="112" r="13" fill="#fff"/>
+            <circle cx="133" cy="112" r="13" fill="#fff"/>
+            <circle cx="92" cy="114" r="8" fill="#111827"/>
+            <circle cx="133" cy="114" r="8" fill="#111827"/>
+            <circle cx="95" cy="110" r="2.2" fill="#fff"/>
+            <circle cx="136" cy="110" r="2.2" fill="#fff"/>
+            <ellipse cx="80" cy="124" rx="8" ry="6" fill="#FB7185" opacity="0.65"/>
+            <ellipse cx="146" cy="124" rx="8" ry="6" fill="#FB7185" opacity="0.65"/>
+            <path d="M95 138 Q113 152 131 138 Q129 154 113 158 Q97 154 95 138" fill="#7C2D12"/>
+            <path d="M101 149 Q113 158 125 149" fill="#FB7185"/>
+            <ellipse cx="113" cy="136" rx="5" ry="3.5" fill="#F59E0B"/>
             <path d="M102 75 Q92 36 72 30" stroke="#111827" stroke-width="4" fill="none"/>
             <path d="M124 75 Q135 36 154 30" stroke="#111827" stroke-width="4" fill="none"/>
             <circle cx="70" cy="29" r="8" fill="#F59E0B"/>
