@@ -19,81 +19,7 @@
             overflow: hidden;
         }
 
-        .special-announcement {
-            margin-top: 80px;
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, #0f2ad8 0%, #00a3ff 55%, #ff8400 100%);
-            color: #fff;
-        }
 
-        .special-announcement .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-
-        .offer-tag {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 999px;
-            padding: 0.25rem 0.85rem;
-            font-weight: 700;
-            letter-spacing: 0.03em;
-            margin-bottom: 0.35rem;
-        }
-
-        .special-announcement h2 {
-            font-size: 1.75rem;
-            margin: 0;
-            line-height: 1.2;
-        }
-
-        .special-announcement p {
-            margin: 0.3rem 0 0;
-            font-size: 1rem;
-            opacity: 0.95;
-        }
-
-        .offer-price {
-            background: #fff;
-            color: #ea580c;
-            border-radius: 12px;
-            padding: 0.85rem 1rem;
-            text-align: center;
-            min-width: 200px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .offer-price strong {
-            display: block;
-            font-size: 1.35rem;
-            color: #c2410c;
-        }
-
-        .offer-contact {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.45rem;
-        }
-
-        .offer-contact .btn {
-            background: #fff;
-            color: #1d4ed8;
-            border: none;
-            font-weight: 700;
-            padding: 0.6rem 1rem;
-        }
-
-        .offer-contact small {
-            font-weight: 600;
-        }
-        
         .hero::before {
             content: '';
             position: absolute;
@@ -443,17 +369,6 @@
         }
         
         @media (max-width: 768px) {
-            .special-announcement {
-                padding: 1rem;
-            }
-
-            .special-announcement h2 {
-                font-size: 1.3rem;
-            }
-
-            .offer-price {
-                width: 100%;
-            }
 
             .hero-container {
                 grid-template-columns: 1fr;
@@ -510,23 +425,6 @@
         </div>
     </nav>
 
-    <section class="special-announcement" aria-label="Special offer announcement">
-        <div class="container">
-            <div>
-                <span class="offer-tag">SPECIAL OFFER</span>
-                <h2>Luminous Used Double Battery Inverter Set</h2>
-                <p>Limited period offer with 2 years warranty — hurry up and book now.</p>
-            </div>
-            <div class="offer-price">
-                Price Only @
-                <strong>₹36,500/-</strong>
-            </div>
-            <div class="offer-contact">
-                <a href="tel:+919591555095" class="btn">Contact Now: 9591555095</a>
-                <small>Dhanu Computers</small>
-            </div>
-        </div>
-    </section>
 
     <!-- Hero Section -->
     <section class="hero">
