@@ -460,3 +460,32 @@
             </div>
         </div>
   
+        <div class="footer-bottom">
+            <p>&copy; 2026 DhanuTech. All rights reserved. | Professional Technology & Electrical Solutions</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #64748b;">
+                Product specs & prices subject to change. Refurbished products may show cosmetic wear. Electrical work as per approved scope.
+            </p>
+        </div>
+    </footer>
+
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="bee-assistant.js" defer></script>
+</body>
+</html>
