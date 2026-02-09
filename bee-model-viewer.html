@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dhanu Tech Assistant Bee Preview</title>
+  <style>
+    html,body{margin:0;height:100%;background:#0b1220;color:#e5e7eb;font-family:system-ui}
+    #c{width:100%;height:100%;display:block}
+    .hud{position:fixed;left:12px;top:12px;background:rgba(2,6,23,.78);padding:10px 12px;border-radius:10px;border:1px solid #334155;font-size:13px;max-width:360px}
+    .err{color:#fca5a5;margin-top:6px;display:none;white-space:pre-wrap}
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="hud">
+  <strong>Dhanu Tech Assistant Bee Preview</strong><br/>
+  Binary-free local preview (JSON mesh format).<br/>
+  Rotating shaded bee + hover bob animation.
+  <div id="err" class="err"></div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const errEl = document.getElementById('err');
+let W=innerWidth,H=innerHeight;
+canvas.width=W*devicePixelRatio; canvas.height=H*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio);
+addEventListener('resize',()=>{W=innerWidth;H=innerHeight;canvas.width=W*devicePixelRatio;canvas.height=H*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);});
+
+function fail(msg){ errEl.style.display='block'; errEl.textContent=msg; }
+
+fetch('assets/dhanu-tech-assistant-bee.json').then(r=>{
+  if(!r.ok) throw new Error('Bee model JSON not found: '+r.status);
+  return r.json();
+}).then(model=>{
+  const meshes=model.meshes||[];
+
+  function proj(x,y,z){
+    const f=440/(z+3.2);
+    return [W*0.5 + x*f, H*0.54 - y*f, f];
+  }
+
+  function rotY(x,z,a){ const c=Math.cos(a),s=Math.sin(a); return [x*c-z*s, x*s+z*c]; }
+  function rotX(y,z,a){ const c=Math.cos(a),s=Math.sin(a); return [y*c-z*s, y*s+z*c]; }
+
+  function draw(t){
+    const time=t*0.001;
+    const wingAmp=(model.animation?.wingAmplitudeDeg||26) * Math.PI/180;
+    const bobAmp=model.animation?.bodyBobY||0.03;
+
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0b1220'; ctx.fillRect(0,0,W,H);
+
+    const yaw=time*0.7;
+    const bob=Math.sin(time*2.6)*bobAmp;
+    const wing = Math.sin(time*14) * wingAmp;
+
+    for(const m of meshes){
+      const p=m.positions, n=m.normals, id=m.indices;
+      const base=m.color||[0.8,0.6,0.2];
+      const isWing=(m.name||'').toLowerCase().includes('wing');
+
+      for(let i=0;i<id.length;i+=3){
+        const ia=id[i]*3, ib=id[i+1]*3, ic=id[i+2]*3;
+        let ax=p[ia], ay=p[ia+1]+bob, az=p[ia+2];
+        let bx=p[ib], by=p[ib+1]+bob, bz=p[ib+2];
+        let cx=p[ic], cy=p[ic+1]+bob, cz=p[ic+2];
+
+        if(isWing){
+          [ay,az]=rotX(ay,az,wing); [by,bz]=rotX(by,bz,wing); [cy,cz]=rotX(cy,cz,wing);
+        }
+
+        [ax,az]=rotY(ax,az,yaw); [bx,bz]=rotY(bx,bz,yaw); [cx,cz]=rotY(cx,cz,yaw);
+        [ay,az]=rotX(ay,az,-0.25); [by,bz]=rotX(by,bz,-0.25); [cy,cz]=rotX(cy,cz,-0.25);
+
+        const A=proj(ax,ay,az), B=proj(bx,by,bz), C=proj(cx,cy,cz);
+        const area=(B[0]-A[0])*(C[1]-A[1])-(B[1]-A[1])*(C[0]-A[0]);
+        if(area>0) continue;
+
+        let shade=0.7;
+        if(n){
+          let nx=(n[ia]+n[ib]+n[ic])/3, ny=(n[ia+1]+n[ib+1]+n[ic+1])/3, nz=(n[ia+2]+n[ib+2]+n[ic+2])/3;
+          if(isWing){ [ny,nz]=rotX(ny,nz,wing); }
+          [nx,nz]=rotY(nx,nz,yaw); [ny,nz]=rotX(ny,nz,-0.25);
+          const ll=1/Math.hypot(nx,ny,nz); nx*=ll; ny*=ll; nz*=ll;
+          shade=Math.max(0.18, nx*0.45+ny*0.3+nz*0.55+0.35);
+        }
+
+        const r=Math.floor(Math.max(20,255*base[0]*shade));
+        const g=Math.floor(Math.max(20,255*base[1]*shade));
+        const b=Math.floor(Math.max(20,255*base[2]*shade));
+        ctx.fillStyle=`rgb(${r},${g},${b})`;
+        ctx.beginPath(); ctx.moveTo(A[0],A[1]); ctx.lineTo(B[0],B[1]); ctx.lineTo(C[0],C[1]); ctx.closePath(); ctx.fill();
+      }
+    }
+
+    const glow=ctx.createRadialGradient(W*0.5,H*0.6,30,W*0.5,H*0.6,280);
+    glow.addColorStop(0,'rgba(250,204,21,0.10)'); glow.addColorStop(1,'rgba(250,204,21,0)');
+    ctx.fillStyle=glow; ctx.fillRect(0,0,W,H);
+
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+}).catch(e=>fail(String(e)));
+</script>
+</body>
+</html>
