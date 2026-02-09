@@ -33,9 +33,10 @@
                         <stop offset="48%" stop-color="#f7c948"/>
                         <stop offset="100%" stop-color="#d99a1f"/>
                     </linearGradient>
-                    <radialGradient id="rb_dark" cx="42%" cy="35%" r="72%">
-                        <stop offset="0%" stop-color="#4a3931"/>
-                        <stop offset="100%" stop-color="#221712"/>
+                    <radialGradient id="rb_face" cx="44%" cy="32%" r="78%">
+                        <stop offset="0%" stop-color="#ffe4a6"/>
+                        <stop offset="55%" stop-color="#f2c768"/>
+                        <stop offset="100%" stop-color="#d9a33d"/>
                     </radialGradient>
                     <radialGradient id="rb_w" cx="52%" cy="35%" r="85%">
                         <stop offset="0%" stop-color="#ffffff" stop-opacity="0.86"/>
@@ -43,10 +44,10 @@
                     </radialGradient>
                 </defs>
 
-                <ellipse class="bee-wing wing-left" cx="122" cy="48" rx="15" ry="28" fill="url(#rb_w)" transform="rotate(-18 122 48)"/>
-                <ellipse class="bee-wing wing-right" cx="147" cy="56" rx="14" ry="24" fill="url(#rb_w)" transform="rotate(10 147 56)"/>
+                <ellipse class="bee-wing wing-left" cx="124" cy="47" rx="20" ry="35" fill="url(#rb_w)" transform="rotate(-20 124 47)"/>
+                <ellipse class="bee-wing wing-right" cx="151" cy="55" rx="19" ry="31" fill="url(#rb_w)" transform="rotate(10 151 55)"/>
                 <ellipse cx="101" cy="96" rx="58" ry="41" fill="url(#rb_y)" stroke="#2a1d17" stroke-width="3.5"/>
-                <ellipse cx="83" cy="81" rx="35" ry="27" fill="url(#rb_dark)"/>
+                <ellipse cx="83" cy="81" rx="35" ry="27" fill="url(#rb_face)"/>
                 <path d="M47 95 C74 84 118 84 145 95 L144 103 C118 96 74 96 48 104 Z" fill="#2a1d17"/>
                 <path d="M52 112 C80 101 122 103 149 116 L148 124 C122 115 80 114 53 122 Z" fill="#2a1d17"/>
                 <g fill="#e7b52f" opacity="0.85">
@@ -62,9 +63,12 @@
                 <path d="M70 75 Q77 71 84 75" stroke="#1f2937" stroke-width="2.2" fill="none" stroke-linecap="round"/>
                 <path d="M92 77 Q99 73 106 77" stroke="#1f2937" stroke-width="2.1" fill="none" stroke-linecap="round"/>
                 <path d="M82 95 Q89 100 96 95" stroke="#7c2d12" stroke-width="2.3" fill="none" stroke-linecap="round"/>
-                <ellipse cx="74" cy="124" rx="4.8" ry="8" fill="#2a1d17"/>
-                <ellipse cx="94" cy="129" rx="4.8" ry="8" fill="#2a1d17"/>
-                <ellipse cx="113" cy="124" rx="4.8" ry="8" fill="#2a1d17"/>
+                <path d="M74 121 L73 140" stroke="#2a1d17" stroke-width="3" stroke-linecap="round"/>
+                <path d="M94 126 L94 146" stroke="#2a1d17" stroke-width="3" stroke-linecap="round"/>
+                <path d="M113 121 L114 140" stroke="#2a1d17" stroke-width="3" stroke-linecap="round"/>
+                <ellipse cx="73" cy="142" rx="5.2" ry="3.2" fill="#2a1d17"/>
+                <ellipse cx="94" cy="148" rx="5.2" ry="3.2" fill="#2a1d17"/>
+                <ellipse cx="114" cy="142" rx="5.2" ry="3.2" fill="#2a1d17"/>
                 <path d="M78 66 Q70 45 56 38" stroke="#2a1d17" stroke-width="2.4" fill="none"/>
                 <path d="M98 67 Q99 46 112 37" stroke="#2a1d17" stroke-width="2.4" fill="none"/>
                 <ellipse cx="55" cy="37" rx="3.8" ry="3" fill="#2a1d17"/>
