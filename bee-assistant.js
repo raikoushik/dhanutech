@@ -4,11 +4,18 @@
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    const tips = [
+        { text: 'Welcome to DhanuTech — Power, Computers, Electronics & Electrical Solutions.', href: 'index.html', cta: 'Home' },
+        { text: 'Explore our Products: laptops, desktops, accessories and more.', href: 'products.html', cta: 'Products' },
+        { text: 'Need service or custom setup? Visit Services and Customization.', href: 'services.html', cta: 'Services' },
+        { text: 'Read latest updates in Blog and contact us for quick support.', href: 'blog.html', cta: 'Blog' }
+    ];
+
     function start() {
         if (!document.body) return;
 
-        const existing = document.querySelector('.honey-bee-assistant');
-        if (existing) existing.remove();
+        document.querySelector('.honey-bee-assistant')?.remove();
+        document.querySelector('.honey-bee-tooltip')?.remove();
 
         const bee = document.createElement('button');
         bee.type = 'button';
@@ -26,15 +33,12 @@
                         <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.34"/>
                     </linearGradient>
                 </defs>
-
                 <ellipse class="hb-wing hb-wing-left" cx="82" cy="50" rx="22" ry="12" fill="url(#hb_w)" stroke="#60a5fa" stroke-width="1.2"/>
                 <ellipse class="hb-wing hb-wing-right" cx="103" cy="45" rx="22" ry="12" fill="url(#hb_w)" stroke="#60a5fa" stroke-width="1.2"/>
-
                 <ellipse cx="94" cy="90" rx="34" ry="23" fill="url(#hb_y)" stroke="#6b3f1d" stroke-width="2.8" transform="rotate(-12 94 90)"/>
                 <path d="M68 84 Q92 72 117 79" stroke="#1f2937" stroke-width="6" fill="none" stroke-linecap="round"/>
                 <path d="M66 95 Q90 84 114 90" stroke="#1f2937" stroke-width="6" fill="none" stroke-linecap="round"/>
                 <path d="M64 106 Q88 96 110 101" stroke="#1f2937" stroke-width="6" fill="none" stroke-linecap="round"/>
-
                 <circle cx="57" cy="74" r="20" fill="url(#hb_y)" stroke="#6b3f1d" stroke-width="2.4"/>
                 <circle cx="50" cy="72" r="3.2" fill="#111827"/>
                 <circle cx="62" cy="72" r="3.2" fill="#111827"/>
@@ -46,7 +50,11 @@
             </svg>
         `;
 
+        const tip = document.createElement('aside');
+        tip.className = 'honey-bee-tooltip';
+
         document.body.appendChild(bee);
+        document.body.appendChild(tip);
 
         const state = {
             x: Math.max(80, window.innerWidth - 220),
@@ -55,8 +63,22 @@
             ty: Math.max(110, window.innerHeight - 290),
             t: 0,
             angle: 0,
-            retargetAt: performance.now() + 1000
+            retargetAt: performance.now() + 1000,
+            paused: false
         };
+
+        let tipIndex = 0;
+        let hideTimer;
+
+        function showTip(force) {
+            if (typeof force === 'number') tipIndex = force % tips.length;
+            const item = tips[tipIndex];
+            tipIndex = (tipIndex + 1) % tips.length;
+            tip.innerHTML = `<p>${item.text}</p><a href="${item.href}">${item.cta}</a>`;
+            tip.classList.add('show');
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => tip.classList.remove('show'), 3300);
+        }
 
         function retarget() {
             const margin = 90;
@@ -67,22 +89,39 @@
 
         function tick(now) {
             state.t += 0.02;
-            if (now > state.retargetAt || (Math.abs(state.tx - state.x) < 16 && Math.abs(state.ty - state.y) < 16)) retarget();
 
-            const ox = Math.sin(state.t * 1.9) * 18;
-            const oy = Math.cos(state.t * 2.2) * 10;
+            if (!state.paused) {
+                if (now > state.retargetAt || (Math.abs(state.tx - state.x) < 16 && Math.abs(state.ty - state.y) < 16)) retarget();
 
-            state.x += (state.tx + ox - state.x) * 0.082;
-            state.y += (state.ty + oy - state.y) * 0.082;
-            state.angle += ((ox * 0.28) - state.angle) * 0.18;
+                const ox = Math.sin(state.t * 1.9) * 18;
+                const oy = Math.cos(state.t * 2.2) * 10;
+                state.x += (state.tx + ox - state.x) * 0.082;
+                state.y += (state.ty + oy - state.y) * 0.082;
+                state.angle += ((ox * 0.28) - state.angle) * 0.18;
+            }
 
             bee.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) rotate(${state.angle}deg)`;
             bee.style.setProperty('--hb-wing', `${Math.sin(state.t * 52) * 30}deg`);
 
+            tip.style.left = `${Math.max(12, Math.min(window.innerWidth - 260, state.x - 240))}px`;
+            tip.style.top = `${Math.max(64, state.y - 4)}px`;
+
             requestAnimationFrame(tick);
         }
 
+        bee.addEventListener('mouseenter', () => {
+            state.paused = true;
+            showTip();
+        });
+        bee.addEventListener('mouseleave', () => {
+            state.paused = false;
+        });
+        bee.addEventListener('click', () => showTip());
+
         window.addEventListener('resize', retarget, { passive: true });
+        setInterval(() => showTip(), 12000);
+
+        showTip(0);
         retarget();
         requestAnimationFrame(tick);
     }
