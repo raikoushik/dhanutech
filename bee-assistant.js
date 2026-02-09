@@ -26,40 +26,62 @@
     bee.className = 'bee-assistant';
     bee.setAttribute('aria-label', 'Helpful bumble bee assistant');
     bee.innerHTML = `
-        <svg class="bee-body" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
-            <ellipse class="bee-wing wing-left" cx="84" cy="74" rx="27" ry="34" fill="#CFF3FF" opacity="0.88"/>
-            <ellipse class="bee-wing wing-right" cx="143" cy="74" rx="27" ry="34" fill="#CFF3FF" opacity="0.88"/>
-            <ellipse cx="113" cy="124" rx="56" ry="48" fill="#FACC15"/>
-            <ellipse cx="113" cy="124" rx="56" ry="48" fill="none" stroke="#111827" stroke-width="10"/>
-            <rect x="69" y="112" width="88" height="14" rx="7" fill="#111827"/>
-            <rect x="69" y="133" width="88" height="14" rx="7" fill="#111827"/>
+        <svg class="bee-body" viewBox="0 0 240 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+            <defs>
+                <radialGradient id="wingGlow" cx="50%" cy="40%" r="75%">
+                    <stop offset="0%" stop-color="#ecfeff" stop-opacity="0.95"/>
+                    <stop offset="100%" stop-color="#7dd3fc" stop-opacity="0.45"/>
+                </radialGradient>
+                <linearGradient id="bodyGold" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#fde047"/>
+                    <stop offset="45%" stop-color="#facc15"/>
+                    <stop offset="100%" stop-color="#f59e0b"/>
+                </linearGradient>
+                <radialGradient id="headShade" cx="45%" cy="30%" r="80%">
+                    <stop offset="0%" stop-color="#4b2e2a"/>
+                    <stop offset="100%" stop-color="#1f1412"/>
+                </radialGradient>
+            </defs>
 
-            <path d="M82 98 Q92 92 102 98" stroke="#111827" stroke-width="4" fill="none" stroke-linecap="round"/>
-            <path d="M124 98 Q134 92 144 98" stroke="#111827" stroke-width="4" fill="none" stroke-linecap="round"/>
-            <circle cx="92" cy="112" r="13" fill="#fff"/>
-            <circle cx="133" cy="112" r="13" fill="#fff"/>
-            <circle cx="92" cy="114" r="8" fill="#111827"/>
-            <circle cx="133" cy="114" r="8" fill="#111827"/>
-            <circle cx="95" cy="110" r="2.2" fill="#fff"/>
-            <circle cx="136" cy="110" r="2.2" fill="#fff"/>
-            <ellipse cx="80" cy="124" rx="8" ry="6" fill="#FB7185" opacity="0.65"/>
-            <ellipse cx="146" cy="124" rx="8" ry="6" fill="#FB7185" opacity="0.65"/>
-            <path d="M96 140 Q113 156 130 140" stroke="#7C2D12" stroke-width="6" fill="none" stroke-linecap="round"/>
-            <path d="M104 147 Q113 154 122 147" stroke="#FB7185" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <ellipse class="bee-wing wing-left" cx="84" cy="76" rx="29" ry="38" fill="url(#wingGlow)" opacity="0.88"/>
+            <ellipse class="bee-wing wing-right" cx="160" cy="76" rx="29" ry="38" fill="url(#wingGlow)" opacity="0.88"/>
 
-            <path d="M102 75 Q92 36 72 30" stroke="#111827" stroke-width="4" fill="none"/>
-            <path d="M124 75 Q135 36 154 30" stroke="#111827" stroke-width="4" fill="none"/>
-            <circle cx="70" cy="29" r="8" fill="#F59E0B"/>
-            <circle cx="156" cy="29" r="8" fill="#F59E0B"/>
+            <ellipse cx="124" cy="124" rx="62" ry="52" fill="url(#bodyGold)"/>
+            <ellipse cx="124" cy="124" rx="62" ry="52" fill="none" stroke="#1f2937" stroke-width="9"/>
+            <ellipse cx="124" cy="98" rx="44" ry="38" fill="url(#headShade)"/>
+
+            <path d="M72 116 C95 106 153 106 176 116 L176 127 C154 120 94 120 72 127 Z" fill="#111827"/>
+            <path d="M72 136 C95 126 153 126 176 136 L176 147 C154 140 94 140 72 147 Z" fill="#111827"/>
+
+            <path d="M95 91 Q105 84 115 91" stroke="#0f172a" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M133 91 Q143 84 153 91" stroke="#0f172a" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+            <circle cx="108" cy="104" r="13" fill="#fff"/>
+            <circle cx="141" cy="104" r="13" fill="#fff"/>
+            <circle cx="108" cy="106" r="7.6" fill="#0f172a"/>
+            <circle cx="141" cy="106" r="7.6" fill="#0f172a"/>
+            <circle cx="111" cy="102" r="2" fill="#fff"/>
+            <circle cx="144" cy="102" r="2" fill="#fff"/>
+
+            <ellipse cx="96" cy="114" rx="7" ry="5" fill="#fb7185" opacity="0.6"/>
+            <ellipse cx="153" cy="114" rx="7" ry="5" fill="#fb7185" opacity="0.6"/>
+            <path d="M107 124 Q124 138 141 124" stroke="#7c2d12" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M114 130 Q124 136 134 130" stroke="#fb7185" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+            <path d="M112 72 Q103 38 84 30" stroke="#1f2937" stroke-width="4" fill="none"/>
+            <path d="M136 72 Q146 38 164 30" stroke="#1f2937" stroke-width="4" fill="none"/>
+            <circle cx="82" cy="29" r="8" fill="#f59e0b"/>
+            <circle cx="166" cy="29" r="8" fill="#f59e0b"/>
 
             <g class="bee-hand-wave">
-                <ellipse cx="53" cy="134" rx="14" ry="12" fill="#F59E0B"/>
-                <circle cx="42" cy="126" r="6" fill="#F59E0B"/>
-                <circle cx="38" cy="136" r="6" fill="#F59E0B"/>
-                <circle cx="43" cy="146" r="6" fill="#F59E0B"/>
+                <ellipse cx="63" cy="138" rx="13" ry="11" fill="#f59e0b"/>
+                <circle cx="53" cy="130" r="5.5" fill="#f59e0b"/>
+                <circle cx="49" cy="139" r="5.5" fill="#f59e0b"/>
+                <circle cx="54" cy="148" r="5.5" fill="#f59e0b"/>
             </g>
         </svg>
     `;
+
 
     const tooltip = document.createElement('aside');
     tooltip.className = 'bee-tooltip';
