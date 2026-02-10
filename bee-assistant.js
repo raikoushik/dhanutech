@@ -27,7 +27,7 @@
         cursorSpeed: 0,
         lastCursorX: window.innerWidth * 0.7,
         lastCursorY: window.innerHeight * 0.35,
-        motionFactor: LOW_END ? 0.42 : 1,
+        motionFactor: LOW_END ? 0.32 : 0.78,
         menuOpen: false,
         announceIndex: 0
     };
@@ -383,14 +383,14 @@
     }
 
     function animate(now) {
-        state.t += 0.016 * state.motionFactor;
+        state.t += 0.012 * state.motionFactor;
         inactivityLoopBehavior(now);
 
         const cursorIdle = now - state.lastPointerMove > 700;
         if (!cursorIdle && state.cursorSpeed < 0.26) {
             state.mode = 'follow';
-            state.tx += ((state.cursorX + 100) - state.tx) * (0.01 * state.motionFactor);
-            state.ty += ((state.cursorY - 68) - state.ty) * (0.01 * state.motionFactor);
+            state.tx += ((state.cursorX + 100) - state.tx) * (0.0068 * state.motionFactor);
+            state.ty += ((state.cursorY - 68) - state.ty) * (0.0068 * state.motionFactor);
         } else if (state.mode === 'follow') {
             state.mode = 'patrol';
             nextPatrolTarget();
@@ -398,8 +398,8 @@
 
         if (state.mode === 'loop') {
             const radius = 66;
-            state.tx = state.cursorX + Math.cos(state.t * 1.8) * radius;
-            state.ty = state.cursorY + Math.sin(state.t * 1.8) * radius * 0.75;
+            state.tx = state.cursorX + Math.cos(state.t * 1.35) * radius;
+            state.ty = state.cursorY + Math.sin(state.t * 1.35) * radius * 0.75;
         } else if (Math.abs(state.tx - state.x) < 24 && Math.abs(state.ty - state.y) < 24 && Math.random() < 0.03) {
             nextPatrolTarget();
         }
@@ -407,11 +407,11 @@
         const driftX = Math.sin(state.t * 0.85) * 5;
         const driftY = Math.cos(state.t * 1.2) * 4;
 
-        state.vx += ((state.tx + driftX) - state.x) * (0.0042 * state.motionFactor);
-        state.vy += ((state.ty + driftY) - state.y) * (0.0042 * state.motionFactor);
+        state.vx += ((state.tx + driftX) - state.x) * (0.003 * state.motionFactor);
+        state.vy += ((state.ty + driftY) - state.y) * (0.003 * state.motionFactor);
 
-        state.vx *= 0.9;
-        state.vy *= 0.9;
+        state.vx *= 0.925;
+        state.vy *= 0.925;
 
         state.x += state.vx;
         state.y += state.vy;
@@ -565,7 +565,7 @@
         }, { passive: true });
 
         window.addEventListener('scroll', onScroll, { passive: true });
-        setInterval(nextPatrolTarget, 6500);
+        setInterval(nextPatrolTarget, 9000);
         setInterval(() => showAnnouncement(), 9000);
         window.addEventListener('resize', () => {
             clampTarget();
