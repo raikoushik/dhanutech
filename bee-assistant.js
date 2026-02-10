@@ -130,13 +130,13 @@
 
     function clampTarget() {
         const margin = 18;
-        state.tx = Math.max(margin, Math.min(window.innerWidth - 145, state.tx));
-        state.ty = Math.max(88, Math.min(window.innerHeight - 165, state.ty));
+        state.tx = Math.max(margin, Math.min(window.innerWidth - 130, state.tx));
+        state.ty = Math.max(40, Math.min(window.innerHeight - 130, state.ty));
     }
 
     function nextPatrolTarget() {
-        state.tx = 24 + Math.random() * Math.max(160, window.innerWidth - 180);
-        state.ty = 90 + Math.random() * Math.max(180, window.innerHeight - 210);
+        state.tx = 20 + Math.random() * Math.max(180, window.innerWidth - 150);
+        state.ty = 40 + Math.random() * Math.max(220, window.innerHeight - 160);
         clampTarget();
     }
 
@@ -183,7 +183,9 @@
 
     function positionUI() {
         bee.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) rotate(${state.angle}deg)`;
-        bee.style.setProperty('--wing-flutter', `${Math.sin(state.t * 45) * 12}deg`);
+        const flutterBase = Math.sin(state.t * 42) * 11;
+        const flutterPulse = Math.sin(state.t * 7.5) * 3.8;
+        bee.style.setProperty('--wing-flutter', `${flutterBase + flutterPulse}deg`);
         tooltip.style.left = `${Math.max(12, state.x - 120)}px`;
         tooltip.style.top = `${Math.max(66, state.y - 52)}px`;
 
@@ -248,12 +250,13 @@
 
         if (current >= 0 && current !== state.lastSectionIndex) {
             state.lastSectionIndex = current;
-            const diagonalX = current % 2 ? (window.innerWidth - 200) : 40;
-            state.tx = diagonalX + Math.random() * 80;
-            state.ty = 96 + Math.random() * Math.max(120, window.innerHeight - 260);
+            const diagonalX = current % 2 ? (window.innerWidth - 180) : 28;
+            state.tx = diagonalX + Math.random() * 100;
+            state.ty = 42 + Math.random() * Math.max(220, window.innerHeight - 150);
             clampTarget();
-            smartContextTarget();
         }
+
+        if (Math.random() < 0.22) smartContextTarget();
     }
 
     function inactivityLoopBehavior(now) {
@@ -279,45 +282,51 @@
         state.t += 0.016;
         inactivityLoopBehavior(now);
 
-        const cursorIdle = now - state.lastPointerMove > 550;
-        if (!cursorIdle && state.cursorSpeed < 0.32) {
+        const cursorIdle = now - state.lastPointerMove > 700;
+        if (!cursorIdle && state.cursorSpeed < 0.26) {
             state.mode = 'follow';
-            state.tx += ((state.cursorX + 92) - state.tx) * 0.015;
-            state.ty += ((state.cursorY - 62) - state.ty) * 0.015;
+            state.tx += ((state.cursorX + 100) - state.tx) * 0.01;
+            state.ty += ((state.cursorY - 68) - state.ty) * 0.01;
         } else if (state.mode === 'follow') {
             state.mode = 'patrol';
             nextPatrolTarget();
         }
 
         if (state.mode === 'loop') {
-            const radius = 72;
+            const radius = 66;
             state.tx = state.cursorX + Math.cos(state.t * 1.8) * radius;
             state.ty = state.cursorY + Math.sin(state.t * 1.8) * radius * 0.75;
         } else if (Math.abs(state.tx - state.x) < 24 && Math.abs(state.ty - state.y) < 24 && Math.random() < 0.03) {
             nextPatrolTarget();
         }
 
-        const driftX = Math.sin(state.t * 1.0) * 6;
-        const driftY = Math.cos(state.t * 1.5) * 5;
+        const driftX = Math.sin(state.t * 0.85) * 5;
+        const driftY = Math.cos(state.t * 1.2) * 4;
 
-        state.vx += ((state.tx + driftX) - state.x) * 0.006;
-        state.vy += ((state.ty + driftY) - state.y) * 0.006;
+        state.vx += ((state.tx + driftX) - state.x) * 0.0042;
+        state.vy += ((state.ty + driftY) - state.y) * 0.0042;
 
-        state.vx *= 0.86;
-        state.vy *= 0.86;
+        state.vx *= 0.9;
+        state.vy *= 0.9;
 
         state.x += state.vx;
         state.y += state.vy;
-        state.angle += ((state.vx * 1.2) - state.angle) * 0.14;
+        const roll = Math.sin(state.t * 0.9) * 1.8;
+        state.angle += (((state.vx * 1.05) + roll) - state.angle) * 0.1;
 
         clampTarget();
         avoidBlockingInteractions();
 
-        if (Math.random() < 0.02) emitSparkle(state.x + 36, state.y + 50);
+        if (Math.random() < 0.022) emitSparkle(state.x + 34, state.y + 46);
 
-        if (Math.random() < 0.0016) {
+        if (Math.random() < 0.0019) {
             bee.classList.add('cleaning');
             setTimeout(() => bee.classList.remove('cleaning'), 900);
+        }
+
+        if (Math.random() < 0.0009) {
+            bee.classList.add('spin');
+            setTimeout(() => bee.classList.remove('spin'), 620);
         }
 
         positionUI();
