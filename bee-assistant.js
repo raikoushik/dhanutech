@@ -1,133 +1,409 @@
 (() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const LOW_END = (
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) ||
+        (navigator.deviceMemory && navigator.deviceMemory <= 2)
+    );
 
-    function startBeeAssistant() {
-        if (document.querySelector('.honeybee-assistant')) return;
+    if (LOW_END) return;
 
-        const bee = document.createElement('button');
-        bee.type = 'button';
-        bee.className = 'honeybee-assistant';
-        bee.setAttribute('aria-label', 'DhanuTech honey bee assistant');
-        bee.innerHTML = `
-            <svg class="honeybee-svg" viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
-                <ellipse class="honeybee-wing back" cx="132" cy="55" rx="34" ry="48" transform="rotate(-14 132 55)"/>
-                <ellipse class="honeybee-wing front" cx="170" cy="75" rx="31" ry="45" transform="rotate(16 170 75)"/>
-                <ellipse class="honeybee-body" cx="128" cy="106" rx="66" ry="43" transform="rotate(12 128 106)"/>
-                <ellipse class="honeybee-stripe" cx="108" cy="104" rx="11" ry="36" transform="rotate(12 108 104)"/>
-                <ellipse class="honeybee-stripe" cx="134" cy="108" rx="11" ry="37" transform="rotate(12 134 108)"/>
-                <ellipse class="honeybee-stripe" cx="160" cy="112" rx="10" ry="35" transform="rotate(12 160 112)"/>
-                <path class="honeybee-tail" d="M188 125 L212 140 L188 148 Z"/>
-                <circle class="honeybee-head" cx="66" cy="93" r="47"/>
-                <path class="honeybee-smile" d="M50 108 Q62 119 76 109"/>
-                <ellipse class="honeybee-eye-open" cx="47" cy="87" rx="7" ry="11"/>
-                <ellipse class="honeybee-eye-dot" cx="49" cy="83" rx="2.2" ry="3"/>
-                <path class="honeybee-eye-wink" d="M72 88 Q82 81 88 88"/>
-                <ellipse class="honeybee-cheek" cx="41" cy="102" rx="8" ry="5"/>
-                <ellipse class="honeybee-cheek" cx="86" cy="102" rx="8" ry="5"/>
-                <path class="honeybee-leg" d="M113 135 Q105 150 93 151"/>
-                <path class="honeybee-leg" d="M154 139 Q165 153 178 154"/>
-                <path class="honeybee-antenna" d="M44 52 Q31 24 21 20"/>
-                <circle class="honeybee-antenna-tip" cx="19" cy="18" r="5"/>
-                <path class="honeybee-antenna" d="M70 51 Q73 25 84 20"/>
-                <circle class="honeybee-antenna-tip" cx="86" cy="18" r="5"/>
+    const WA_LINK = 'https://wa.me/919787959595?text=' + encodeURIComponent("Hi Dhanu Tech, I'd like to discuss an engineering requirement.");
+
+    const state = {
+        x: 0,
+        y: 0,
+        tx: 0,
+        ty: 0,
+        vx: 0,
+        vy: 0,
+        t: 0,
+        angle: 0,
+        mode: 'patrol',
+        cursorX: window.innerWidth * 0.7,
+        cursorY: window.innerHeight * 0.35,
+        lastPointerMove: performance.now(),
+        lastInteractionAt: performance.now(),
+        lastSectionIndex: -1,
+        muted: true,
+        hidden: false
+    };
+
+    let bee;
+    let tooltip;
+    let sparkleLayer;
+    let helperText;
+    let controls;
+    let audioCtx;
+    let buzzOsc;
+    let buzzGain;
+
+    const sections = [];
+
+    function q(sel) { return document.querySelector(sel); }
+    function qa(sel) { return Array.from(document.querySelectorAll(sel)); }
+
+    function createBeeMarkup() {
+        const el = document.createElement('button');
+        el.type = 'button';
+        el.className = 'honeybee-assistant';
+        el.setAttribute('aria-label', 'Dhanu Tech helper bee');
+        el.innerHTML = `
+            <svg class="honeybee-svg" viewBox="0 0 260 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                <defs>
+                    <radialGradient id="beeBody" cx="35%" cy="35%" r="72%">
+                        <stop offset="0%" stop-color="#fde047"/>
+                        <stop offset="55%" stop-color="#facc15"/>
+                        <stop offset="100%" stop-color="#eab308"/>
+                    </radialGradient>
+                    <radialGradient id="beeWing" cx="50%" cy="30%" r="80%">
+                        <stop offset="0%" stop-color="rgba(255,255,255,0.88)"/>
+                        <stop offset="100%" stop-color="rgba(125,211,252,0.34)"/>
+                    </radialGradient>
+                </defs>
+
+                <ellipse class="honeybee-wing wing-back" cx="148" cy="58" rx="38" ry="52" transform="rotate(-14 148 58)"/>
+                <ellipse class="honeybee-wing wing-front" cx="191" cy="82" rx="34" ry="48" transform="rotate(16 191 82)"/>
+
+                <ellipse class="honeybee-body" cx="145" cy="115" rx="75" ry="50" transform="rotate(10 145 115)"/>
+                <ellipse class="honeybee-stripe" cx="119" cy="110" rx="12" ry="42" transform="rotate(10 119 110)"/>
+                <ellipse class="honeybee-stripe" cx="148" cy="116" rx="13" ry="44" transform="rotate(10 148 116)"/>
+                <ellipse class="honeybee-stripe" cx="178" cy="122" rx="11" ry="41" transform="rotate(10 178 122)"/>
+                <path class="honeybee-tail" d="M212 133 L244 152 L212 161 Z"/>
+
+                <circle class="honeybee-head" cx="76" cy="102" r="54"/>
+                <path class="honeybee-smile" d="M58 121 Q74 136 92 121"/>
+                <ellipse class="honeybee-eye-open" cx="54" cy="95" rx="9" ry="13"/>
+                <ellipse class="honeybee-eye-dot" cx="56" cy="90" rx="2.6" ry="3.4"/>
+                <path class="honeybee-eye-wink" d="M85 95 Q98 85 106 95"/>
+                <ellipse class="honeybee-cheek" cx="46" cy="113" rx="9" ry="5.5"/>
+                <ellipse class="honeybee-cheek" cx="97" cy="113" rx="9" ry="5.5"/>
+
+                <path class="honeybee-leg" d="M128 149 Q116 165 99 166"/>
+                <path class="honeybee-leg" d="M170 153 Q184 167 201 168"/>
+
+                <path class="honeybee-antenna" d="M52 59 Q37 27 24 21"/>
+                <circle class="honeybee-antenna-tip" cx="21" cy="19" r="6"/>
+                <path class="honeybee-antenna" d="M81 58 Q86 28 101 22"/>
+                <circle class="honeybee-antenna-tip" cx="104" cy="20" r="6"/>
             </svg>
+            <span class="honeybee-aura" aria-hidden="true"></span>
         `;
+        return el;
+    }
 
-        const sparkleLayer = document.createElement('div');
-        sparkleLayer.className = 'honeybee-sparkle-layer';
+    function createTooltip() {
+        const node = document.createElement('aside');
+        node.className = 'honeybee-tooltip';
+        node.innerHTML = '<p>Need help? Ask an Engineer 🐝</p>';
+        return node;
+    }
 
-        document.body.appendChild(sparkleLayer);
-        document.body.appendChild(bee);
+    function createHelperText() {
+        const node = document.createElement('div');
+        node.className = 'honeybee-helper-text';
+        return node;
+    }
 
-        const state = {
-            x: Math.max(18, window.innerWidth - 220),
-            y: Math.max(80, window.innerHeight - 220),
-            tx: Math.max(18, window.innerWidth - 220),
-            ty: Math.max(80, window.innerHeight - 220),
-            t: 0,
-            angle: 0
-        };
+    function createControls() {
+        const node = document.createElement('div');
+        node.className = 'honeybee-controls';
+        node.innerHTML = `
+            <button type="button" class="honeybee-control-btn" data-role="mute" aria-label="Toggle bee sound">🔇</button>
+            <button type="button" class="honeybee-control-btn" data-role="hide" aria-label="Hide bee">🙈</button>
+        `;
+        return node;
+    }
 
-        function emitSparkle(x, y) {
-            const node = document.createElement('span');
-            node.className = 'honeybee-sparkle';
-            node.textContent = Math.random() < 0.45 ? '✨' : '•';
-            node.style.left = `${x}px`;
-            node.style.top = `${y}px`;
-            node.style.setProperty('--dx', `${(Math.random() - 0.5) * 22}px`);
-            sparkleLayer.appendChild(node);
-            setTimeout(() => node.remove(), 900);
-        }
+    function emitSparkle(x, y) {
+        const sp = document.createElement('span');
+        sp.className = 'honeybee-sparkle';
+        sp.textContent = Math.random() < 0.55 ? '✦' : '•';
+        sp.style.left = `${x}px`;
+        sp.style.top = `${y}px`;
+        sp.style.setProperty('--dx', `${(Math.random() - 0.5) * 26}px`);
+        sparkleLayer.appendChild(sp);
+        setTimeout(() => sp.remove(), 880);
+    }
 
-        function applyPosition() {
-            bee.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) rotate(${state.angle}deg)`;
-        }
+    function clampTarget() {
+        const margin = 24;
+        state.tx = Math.max(margin, Math.min(window.innerWidth - 170, state.tx));
+        state.ty = Math.max(88, Math.min(window.innerHeight - 190, state.ty));
+    }
 
-        function retarget() {
-            state.tx = 25 + Math.random() * Math.max(60, window.innerWidth - 210);
-            state.ty = 82 + Math.random() * Math.max(60, window.innerHeight - 260);
-        }
+    function nextPatrolTarget() {
+        state.tx = 38 + Math.random() * Math.max(100, window.innerWidth - 220);
+        state.ty = 98 + Math.random() * Math.max(120, window.innerHeight - 280);
+        clampTarget();
+    }
 
-        function tick() {
-            state.t += 0.016;
-
-            if (Math.abs(state.tx - state.x) < 20 && Math.abs(state.ty - state.y) < 20) {
-                retarget();
-            }
-
-            const ox = Math.sin(state.t * 1.7) * 13;
-            const oy = Math.cos(state.t * 2.3) * 9;
-
-            state.x += (state.tx + ox - state.x) * 0.07;
-            state.y += (state.ty + oy - state.y) * 0.07;
-            state.angle += ((ox * 0.3) - state.angle) * 0.15;
-
-            applyPosition();
-            bee.style.setProperty('--wing-flutter', `${Math.sin(state.t * 38) * 11}deg`);
-
-            if (Math.random() < 0.04) emitSparkle(state.x + 34, state.y + 44);
-        }
-
-        function animateWithRaf() {
-            function loop() {
-                tick();
-                window.requestAnimationFrame(loop);
-            }
-            window.requestAnimationFrame(loop);
-        }
-
-        bee.addEventListener('mouseenter', () => {
-            emitSparkle(state.x + 28, state.y + 28);
-            emitSparkle(state.x + 40, state.y + 30);
-        });
-
-        bee.addEventListener('click', () => {
-            emitSparkle(state.x + 22, state.y + 22);
-            emitSparkle(state.x + 42, state.y + 22);
-            emitSparkle(state.x + 32, state.y + 34);
-        });
-
-        window.addEventListener('resize', retarget);
-
-        if (prefersReducedMotion) {
-            state.x = Math.max(18, window.innerWidth - 220);
-            state.y = Math.max(80, window.innerHeight - 220);
-            applyPosition();
-            return;
-        }
-
-        retarget();
-
-        if (window.gsap?.ticker) {
-            window.gsap.ticker.add(tick);
-        } else {
-            animateWithRaf();
+    function avoidBlockingInteractions() {
+        const cx = state.x + 65;
+        const cy = state.y + 55;
+        const el = document.elementFromPoint(cx, cy);
+        if (!el) return;
+        const blocker = el.closest('button, a, input, textarea, select, .btn, .service-card, .contact-item');
+        if (blocker) {
+            state.tx += (Math.random() > 0.5 ? 1 : -1) * 120;
+            state.ty -= 70;
+            clampTarget();
         }
     }
 
+    function setupAudio() {
+        if (audioCtx) return;
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        buzzOsc = audioCtx.createOscillator();
+        const buzzOsc2 = audioCtx.createOscillator();
+        buzzGain = audioCtx.createGain();
+        buzzGain.gain.value = 0;
+        buzzOsc.type = 'sawtooth';
+        buzzOsc.frequency.value = 210;
+        buzzOsc2.type = 'triangle';
+        buzzOsc2.frequency.value = 228;
+        buzzOsc.connect(buzzGain);
+        buzzOsc2.connect(buzzGain);
+        buzzGain.connect(audioCtx.destination);
+        buzzOsc.start();
+        buzzOsc2.start();
+    }
+
+    function updateAudio() {
+        if (!buzzGain) return;
+        const target = state.muted || state.hidden ? 0 : 0.007;
+        buzzGain.gain.value += (target - buzzGain.gain.value) * 0.08;
+        if (buzzOsc) {
+            const flutter = 205 + (Math.sin(state.t * 10) * 18);
+            buzzOsc.frequency.value = flutter;
+        }
+    }
+
+    function positionUI() {
+        bee.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) rotate(${state.angle}deg)`;
+        bee.style.setProperty('--wing-flutter', `${Math.sin(state.t * 45) * 12}deg`);
+        tooltip.style.left = `${Math.max(12, state.x - 120)}px`;
+        tooltip.style.top = `${Math.max(66, state.y - 52)}px`;
+
+        helperText.style.left = `${Math.max(12, state.x - 120)}px`;
+        helperText.style.top = `${Math.max(66, state.y + 96)}px`;
+    }
+
+    function trackSections() {
+        const list = qa('section, .page-header, .container, article');
+        sections.push(...list.filter(Boolean));
+    }
+
+    function smartContextTarget() {
+        const services = q('#services, .services-section');
+        const contact = q('#contact, .contact-section');
+        const blogTitle = q('article h1, .blog-post h1, .blog-header h1');
+
+        if (blogTitle) {
+            const r = blogTitle.getBoundingClientRect();
+            state.tx = Math.min(window.innerWidth - 180, r.right + 25);
+            state.ty = Math.max(88, r.top + 20);
+            helperText.textContent = 'Exploring insights? I can guide you.';
+            return;
+        }
+
+        if (contact) {
+            const cr = contact.getBoundingClientRect();
+            if (cr.top < window.innerHeight * 0.65 && cr.bottom > 120) {
+                const wa = q('.whatsapp-float, .btn-whatsapp');
+                if (wa) {
+                    const wr = wa.getBoundingClientRect();
+                    state.tx = Math.max(24, wr.left - 140);
+                    state.ty = Math.max(90, wr.top - 40);
+                    helperText.textContent = 'Ready to connect with our engineers?';
+                    return;
+                }
+            }
+        }
+
+        if (services) {
+            const sr = services.getBoundingClientRect();
+            if (sr.top < window.innerHeight * 0.75 && sr.bottom > 140) {
+                const card = q('.service-card, .service-item');
+                if (card) {
+                    const r = card.getBoundingClientRect();
+                    state.tx = Math.max(24, r.left - 120);
+                    state.ty = Math.max(88, r.top + 12);
+                    helperText.textContent = 'These are our core engineering services.';
+                    return;
+                }
+            }
+        }
+
+        helperText.textContent = '';
+    }
+
+    function onScroll() {
+        const current = sections.findIndex((s) => {
+            const r = s.getBoundingClientRect();
+            return r.top <= window.innerHeight * 0.35 && r.bottom >= window.innerHeight * 0.35;
+        });
+
+        if (current >= 0 && current !== state.lastSectionIndex) {
+            state.lastSectionIndex = current;
+            const next = sections[Math.min(current + 1, sections.length - 1)] || sections[current];
+            const r = next.getBoundingClientRect();
+            state.tx = Math.min(window.innerWidth - 170, Math.max(28, r.left + 24 + (current % 2 ? 120 : 30)));
+            state.ty = Math.max(90, Math.min(window.innerHeight - 200, r.top + 34));
+            clampTarget();
+        }
+
+        smartContextTarget();
+    }
+
+    function inactivityLoopBehavior(now) {
+        const idleMs = now - state.lastPointerMove;
+        if (idleMs > 12000 && idleMs < 14500) {
+            state.mode = 'loop';
+        } else if (idleMs <= 12000 && state.mode === 'loop') {
+            state.mode = 'patrol';
+        }
+    }
+
+    function exitIntentBehavior(e) {
+        if (e.clientY <= 6) {
+            state.tx = window.innerWidth - 220;
+            state.ty = 82;
+            helperText.textContent = 'Before you go, need help?';
+            helperText.classList.add('show');
+            setTimeout(() => helperText.classList.remove('show'), 3200);
+        }
+    }
+
+    function animate(now) {
+        state.t += 0.016;
+        inactivityLoopBehavior(now);
+
+        const cursorIdle = now - state.lastPointerMove > 450;
+        if (!cursorIdle) {
+            state.mode = 'follow';
+            state.tx += ((state.cursorX + 78) - state.tx) * 0.04;
+            state.ty += ((state.cursorY - 54) - state.ty) * 0.04;
+        } else if (state.mode === 'follow') {
+            state.mode = 'patrol';
+            nextPatrolTarget();
+        }
+
+        if (state.mode === 'loop') {
+            const radius = 85;
+            state.tx = state.cursorX + Math.cos(state.t * 1.8) * radius;
+            state.ty = state.cursorY + Math.sin(state.t * 1.8) * radius * 0.75;
+        } else if (Math.abs(state.tx - state.x) < 24 && Math.abs(state.ty - state.y) < 24 && Math.random() < 0.03) {
+            nextPatrolTarget();
+        }
+
+        const driftX = Math.sin(state.t * 1.1) * 9;
+        const driftY = Math.cos(state.t * 1.7) * 7;
+
+        state.vx += ((state.tx + driftX) - state.x) * 0.010;
+        state.vy += ((state.ty + driftY) - state.y) * 0.010;
+
+        state.vx *= 0.92;
+        state.vy *= 0.92;
+
+        state.x += state.vx;
+        state.y += state.vy;
+        state.angle += ((state.vx * 1.2) - state.angle) * 0.14;
+
+        clampTarget();
+        avoidBlockingInteractions();
+
+        if (Math.random() < 0.032) emitSparkle(state.x + 40, state.y + 58);
+
+        if (Math.random() < 0.0016) {
+            bee.classList.add('cleaning');
+            setTimeout(() => bee.classList.remove('cleaning'), 900);
+        }
+
+        positionUI();
+        updateAudio();
+        requestAnimationFrame(animate);
+    }
+
+    function init() {
+        if (q('.honeybee-assistant')) return;
+
+        sparkleLayer = document.createElement('div');
+        sparkleLayer.className = 'honeybee-sparkle-layer';
+        bee = createBeeMarkup();
+        tooltip = createTooltip();
+        helperText = createHelperText();
+        controls = createControls();
+
+        document.body.appendChild(sparkleLayer);
+        document.body.appendChild(bee);
+        document.body.appendChild(tooltip);
+        document.body.appendChild(helperText);
+        document.body.appendChild(controls);
+
+        const logo = q('.nav-logo');
+        const lr = logo ? logo.getBoundingClientRect() : { right: 120, top: 20 };
+        state.x = Math.max(12, lr.right - 24);
+        state.y = Math.max(82, lr.top + 8);
+        state.tx = window.innerWidth - 210;
+        state.ty = Math.min(window.innerHeight - 220, 180);
+
+        positionUI();
+        trackSections();
+
+        bee.addEventListener('mouseenter', () => {
+            tooltip.classList.add('show');
+            emitSparkle(state.x + 44, state.y + 52);
+            state.lastInteractionAt = performance.now();
+        });
+
+        bee.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+
+        bee.addEventListener('click', () => {
+            window.open(WA_LINK, '_blank', 'noopener,noreferrer');
+            emitSparkle(state.x + 30, state.y + 44);
+            emitSparkle(state.x + 50, state.y + 44);
+            state.lastInteractionAt = performance.now();
+        });
+
+        controls.addEventListener('click', (e) => {
+            const btn = e.target.closest('.honeybee-control-btn');
+            if (!btn) return;
+            const role = btn.getAttribute('data-role');
+
+            if (role === 'mute') {
+                state.muted = !state.muted;
+                if (!state.muted) setupAudio();
+                btn.textContent = state.muted ? '🔇' : '🔊';
+            }
+
+            if (role === 'hide') {
+                state.hidden = !state.hidden;
+                bee.classList.toggle('is-hidden', state.hidden);
+                tooltip.classList.toggle('is-hidden', state.hidden);
+                helperText.classList.toggle('is-hidden', state.hidden);
+                btn.textContent = state.hidden ? '🐝' : '🙈';
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            state.cursorX = e.clientX;
+            state.cursorY = e.clientY;
+            state.lastPointerMove = performance.now();
+        }, { passive: true });
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', () => {
+            clampTarget();
+            nextPatrolTarget();
+        });
+        document.addEventListener('mouseleave', exitIntentBehavior);
+
+        requestAnimationFrame(animate);
+    }
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', startBeeAssistant, { once: true });
+        document.addEventListener('DOMContentLoaded', init, { once: true });
     } else {
-        startBeeAssistant();
+        init();
     }
 })();

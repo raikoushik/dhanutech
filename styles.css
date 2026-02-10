@@ -1262,70 +1262,143 @@ footer {
     filter: brightness(1.06) saturate(1.08) drop-shadow(0 8px 14px rgba(255,255,255,0.28));
 }
 
-/* Honey bee assistant (no banner) */
+/* Honey bee assistant (premium interactive mascot) */
 .honeybee-assistant {
     position: fixed;
     top: 0;
     left: 0;
-    width: 114px;
-    height: 90px;
+    width: 132px;
+    height: 102px;
     border: none;
     padding: 0;
     background: transparent;
     z-index: 1600;
     cursor: pointer;
-    transform-origin: 42% 50%;
-    filter: drop-shadow(0 12px 14px rgba(15, 23, 42, 0.32));
+    transform-origin: 44% 54%;
+    filter: drop-shadow(0 14px 16px rgba(15, 23, 42, 0.26));
+    transition: opacity .22s ease;
 }
 
-.honeybee-svg {
-    width: 100%;
-    height: 100%;
-    display: block;
+.honeybee-assistant.is-hidden { opacity: 0; pointer-events: none; }
+.honeybee-assistant.cleaning { filter: drop-shadow(0 14px 16px rgba(15, 23, 42, 0.26)) saturate(1.08); }
+
+.honeybee-svg { width: 100%; height: 100%; display: block; }
+
+.honeybee-aura {
+    position: absolute;
+    inset: 32% 28% 10% 28%;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(254, 240, 138, 0.2) 0%, rgba(250, 204, 21, 0.08) 55%, transparent 80%);
+    filter: blur(8px);
+    pointer-events: none;
+    animation: honeybeeAuraPulse 3.2s ease-in-out infinite;
 }
 
 .honeybee-wing {
-    fill: rgba(176, 233, 255, 0.72);
-    stroke: #1e3a8a;
-    stroke-width: 4;
-    transform-origin: 135px 65px;
+    fill: rgba(186, 230, 253, 0.48);
+    stroke: rgba(30, 58, 138, 0.72);
+    stroke-width: 3;
 }
 
-.honeybee-wing.front {
+.honeybee-wing.wing-front {
+    transform-origin: 192px 84px;
     transform: rotate(var(--wing-flutter, 0deg));
 }
 
-.honeybee-wing.back {
-    transform: rotate(calc(var(--wing-flutter, 0deg) * -0.75));
+.honeybee-wing.wing-back {
+    transform-origin: 148px 58px;
+    transform: rotate(calc(var(--wing-flutter, 0deg) * -0.68));
+    opacity: 0.88;
 }
 
 .honeybee-body,
 .honeybee-head {
-    fill: #facc15;
+    fill: url(#beeBody);
     stroke: #1f2937;
-    stroke-width: 4;
+    stroke-width: 3.6;
 }
 
 .honeybee-stripe,
 .honeybee-tail {
-    fill: #111827;
-    opacity: 0.9;
+    fill: #0f172a;
+    opacity: 0.92;
 }
 
-.honeybee-eye-open { fill: #111827; }
+.honeybee-eye-open { fill: #0f172a; }
 .honeybee-eye-dot { fill: #f8fafc; }
 .honeybee-eye-wink,
 .honeybee-smile,
 .honeybee-leg,
 .honeybee-antenna {
     stroke: #1f2937;
-    stroke-width: 4;
+    stroke-width: 3.4;
     fill: none;
     stroke-linecap: round;
 }
 
-.honeybee-cheek { fill: #fb7185; }
+.honeybee-cheek { fill: rgba(251, 113, 133, 0.86); }
 .honeybee-antenna-tip { fill: #1f2937; }
+
+.honeybee-tooltip {
+    position: fixed;
+    z-index: 1610;
+    max-width: 220px;
+    background: rgba(15, 23, 42, 0.92);
+    color: #e2e8f0;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 10px;
+    padding: 9px 12px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .18s ease, transform .18s ease;
+    pointer-events: none;
+    box-shadow: 0 10px 26px rgba(2, 6, 23, 0.26);
+}
+
+.honeybee-tooltip p { margin: 0; font-size: .83rem; line-height: 1.35; }
+.honeybee-tooltip.show { opacity: 1; transform: translateY(0); }
+
+.honeybee-helper-text {
+    position: fixed;
+    z-index: 1605;
+    max-width: 260px;
+    padding: 7px 10px;
+    border-radius: 9px;
+    background: rgba(248, 250, 252, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.36);
+    color: #334155;
+    font-size: .8rem;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: .24s ease;
+    pointer-events: none;
+}
+
+.honeybee-helper-text.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.honeybee-helper-text:empty { display: none; }
+
+.honeybee-controls {
+    position: fixed;
+    left: 14px;
+    bottom: 18px;
+    z-index: 1620;
+    display: inline-flex;
+    gap: 8px;
+}
+
+.honeybee-control-btn {
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(148, 163, 184, 0.38);
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.16);
+}
 
 .honeybee-sparkle-layer {
     position: fixed;
@@ -1336,20 +1409,27 @@ footer {
 
 .honeybee-sparkle {
     position: fixed;
-    font-size: 14px;
-    color: #fde047;
-    text-shadow: 0 2px 7px rgba(250, 204, 21, 0.65);
-    animation: honeybeeSparkle .9s ease-out forwards;
+    font-size: 13px;
+    color: #fef08a;
+    text-shadow: 0 2px 8px rgba(250, 204, 21, 0.66);
+    animation: honeybeeSparkle .88s ease-out forwards;
 }
 
 @keyframes honeybeeSparkle {
-    0% { opacity: 0.9; transform: translate3d(0, 0, 0) scale(1); }
-    100% { opacity: 0; transform: translate3d(var(--dx), -26px, 0) scale(0.45); }
+    0% { opacity: .95; transform: translate3d(0, 0, 0) scale(1); }
+    100% { opacity: 0; transform: translate3d(var(--dx), -24px, 0) scale(.38); }
 }
 
+@keyframes honeybeeAuraPulse {
+    0%, 100% { opacity: .44; transform: scale(0.98); }
+    50% { opacity: .68; transform: scale(1.04); }
+}
+
+.honeybee-tooltip.is-hidden,
+.honeybee-helper-text.is-hidden { opacity: 0 !important; }
+
 @media (max-width: 768px) {
-    .honeybee-assistant {
-        width: 98px;
-        height: 78px;
-    }
+    .honeybee-assistant { width: 116px; height: 90px; }
+    .honeybee-controls { left: 10px; bottom: 12px; }
+    .honeybee-tooltip { max-width: 196px; }
 }
