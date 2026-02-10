@@ -1,11 +1,10 @@
 (() => {
+    const PREFERS_REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const LOW_END = (
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        PREFERS_REDUCED ||
         (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) ||
         (navigator.deviceMemory && navigator.deviceMemory <= 2)
     );
-
-    if (LOW_END) return;
 
     const WA_LINK = 'https://wa.me/919787959595?text=' + encodeURIComponent("Hi Dhanu Tech, I'd like to discuss an engineering requirement.");
 
@@ -28,7 +27,9 @@
         hidden: false,
         cursorSpeed: 0,
         lastCursorX: window.innerWidth * 0.7,
-        lastCursorY: window.innerHeight * 0.35
+        lastCursorY: window.innerHeight * 0.35,
+        motionFactor: LOW_END ? 0.42 : 1,
+        menuOpen: false
     };
 
     let bee;
@@ -39,6 +40,7 @@
     let audioCtx;
     let buzzOsc;
     let buzzGain;
+    let actionMenu;
 
     const sections = [];
 
@@ -117,6 +119,17 @@
         return node;
     }
 
+    function createActionMenu() {
+        const node = document.createElement('div');
+        node.className = 'honeybee-action-menu';
+        node.innerHTML = `
+            <a href="${WA_LINK}" target="_blank" rel="noopener noreferrer" class="honeybee-action">WhatsApp</a>
+            <a href="services.html" class="honeybee-action">Services</a>
+            <a href="contact.html" class="honeybee-action">Contact</a>
+        `;
+        return node;
+    }
+
     function emitSparkle(x, y) {
         const sp = document.createElement('span');
         sp.className = 'honeybee-sparkle';
@@ -183,7 +196,7 @@
 
     function positionUI() {
         bee.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) rotate(${state.angle}deg)`;
-        const flutterBase = Math.sin(state.t * 42) * 11;
+        const flutterBase = Math.sin(state.t * (42 * state.motionFactor + 12)) * 11;
         const flutterPulse = Math.sin(state.t * 7.5) * 3.8;
         bee.style.setProperty('--wing-flutter', `${flutterBase + flutterPulse}deg`);
         tooltip.style.left = `${Math.max(12, state.x - 120)}px`;
@@ -191,6 +204,11 @@
 
         helperText.style.left = `${Math.max(12, state.x - 120)}px`;
         helperText.style.top = `${Math.max(66, state.y + 96)}px`;
+
+        if (actionMenu) {
+            actionMenu.style.left = `${Math.max(12, state.x - 24)}px`;
+            actionMenu.style.top = `${Math.max(66, state.y + 82)}px`;
+        }
     }
 
     function trackSections() {
@@ -256,7 +274,7 @@
             clampTarget();
         }
 
-        if (Math.random() < 0.22) smartContextTarget();
+        if (Math.random() < 0.22 && !state.menuOpen) smartContextTarget();
     }
 
     function inactivityLoopBehavior(now) {
@@ -279,14 +297,14 @@
     }
 
     function animate(now) {
-        state.t += 0.016;
+        state.t += 0.016 * state.motionFactor;
         inactivityLoopBehavior(now);
 
         const cursorIdle = now - state.lastPointerMove > 700;
         if (!cursorIdle && state.cursorSpeed < 0.26) {
             state.mode = 'follow';
-            state.tx += ((state.cursorX + 100) - state.tx) * 0.01;
-            state.ty += ((state.cursorY - 68) - state.ty) * 0.01;
+            state.tx += ((state.cursorX + 100) - state.tx) * (0.01 * state.motionFactor);
+            state.ty += ((state.cursorY - 68) - state.ty) * (0.01 * state.motionFactor);
         } else if (state.mode === 'follow') {
             state.mode = 'patrol';
             nextPatrolTarget();
@@ -303,8 +321,8 @@
         const driftX = Math.sin(state.t * 0.85) * 5;
         const driftY = Math.cos(state.t * 1.2) * 4;
 
-        state.vx += ((state.tx + driftX) - state.x) * 0.0042;
-        state.vy += ((state.ty + driftY) - state.y) * 0.0042;
+        state.vx += ((state.tx + driftX) - state.x) * (0.0042 * state.motionFactor);
+        state.vy += ((state.ty + driftY) - state.y) * (0.0042 * state.motionFactor);
 
         state.vx *= 0.9;
         state.vy *= 0.9;
@@ -317,7 +335,7 @@
         clampTarget();
         avoidBlockingInteractions();
 
-        if (Math.random() < 0.022) emitSparkle(state.x + 34, state.y + 46);
+        if (!LOW_END && Math.random() < 0.022) emitSparkle(state.x + 34, state.y + 46);
 
         if (Math.random() < 0.0019) {
             bee.classList.add('cleaning');
@@ -343,12 +361,14 @@
         tooltip = createTooltip();
         helperText = createHelperText();
         controls = createControls();
+        actionMenu = createActionMenu();
 
         document.body.appendChild(sparkleLayer);
         document.body.appendChild(bee);
         document.body.appendChild(tooltip);
         document.body.appendChild(helperText);
         document.body.appendChild(controls);
+        document.body.appendChild(actionMenu);
 
         const logo = q('.nav-logo');
         const lr = logo ? logo.getBoundingClientRect() : { right: 120, top: 20 };
@@ -369,10 +389,25 @@
         bee.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
 
         bee.addEventListener('click', () => {
-            window.open(WA_LINK, '_blank', 'noopener,noreferrer');
-            emitSparkle(state.x + 30, state.y + 44);
-            emitSparkle(state.x + 50, state.y + 44);
+            state.menuOpen = !state.menuOpen;
+            actionMenu.classList.toggle('show', state.menuOpen);
+            bee.classList.toggle('interactive', state.menuOpen);
+            if (!LOW_END) {
+                emitSparkle(state.x + 30, state.y + 44);
+                emitSparkle(state.x + 50, state.y + 44);
+            }
             state.lastInteractionAt = performance.now();
+        });
+
+        bee.addEventListener('dblclick', () => {
+            window.open(WA_LINK, '_blank', 'noopener,noreferrer');
+        });
+
+        bee.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.open(WA_LINK, '_blank', 'noopener,noreferrer');
+            }
         });
 
         controls.addEventListener('click', (e) => {
@@ -381,6 +416,10 @@
             const role = btn.getAttribute('data-role');
 
             if (role === 'mute') {
+                if (LOW_END) {
+                    btn.textContent = '🚫';
+                    return;
+                }
                 state.muted = !state.muted;
                 if (!state.muted) setupAudio();
                 btn.textContent = state.muted ? '🔇' : '🔊';
@@ -392,6 +431,14 @@
                 tooltip.classList.toggle('is-hidden', state.hidden);
                 helperText.classList.toggle('is-hidden', state.hidden);
                 btn.textContent = state.hidden ? '🐝' : '🙈';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (state.menuOpen && !e.target.closest('.honeybee-assistant, .honeybee-action-menu')) {
+                state.menuOpen = false;
+                actionMenu.classList.remove('show');
+                bee.classList.remove('interactive');
             }
         });
 
@@ -407,6 +454,14 @@
             state.lastCursorX = e.clientX;
             state.lastCursorY = e.clientY;
             state.lastPointerMove = now;
+        }, { passive: true });
+
+        window.addEventListener('touchstart', (e) => {
+            const t = e.touches && e.touches[0];
+            if (!t) return;
+            state.cursorX = t.clientX;
+            state.cursorY = t.clientY;
+            state.lastPointerMove = performance.now();
         }, { passive: true });
 
         window.addEventListener('scroll', onScroll, { passive: true });

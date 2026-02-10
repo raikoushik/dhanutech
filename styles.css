@@ -1401,6 +1401,49 @@ footer {
     box-shadow: 0 6px 16px rgba(15, 23, 42, 0.16);
 }
 
+
+.honeybee-action-menu {
+    position: fixed;
+    z-index: 1615;
+    display: inline-flex;
+    gap: 7px;
+    padding: 6px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    box-shadow: 0 10px 22px rgba(2, 6, 23, 0.22);
+    opacity: 0;
+    transform: translateY(5px) scale(0.96);
+    pointer-events: none;
+    transition: .2s ease;
+}
+
+.honeybee-action-menu.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.honeybee-action {
+    padding: 6px 10px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 0.74rem;
+    color: #e2e8f0;
+    background: rgba(30, 41, 59, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    transition: .18s ease;
+}
+
+.honeybee-action:hover {
+    color: #0f172a;
+    background: #fef08a;
+    border-color: #fef08a;
+}
+
+.honeybee-assistant.interactive {
+    filter: drop-shadow(0 16px 20px rgba(245, 158, 11, 0.38));
+}
 .honeybee-sparkle-layer {
     position: fixed;
     inset: 0;
