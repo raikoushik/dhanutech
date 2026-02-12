@@ -1,39 +1,64 @@
 # Secure Server Layer (Node.js + Express)
 
-This folder adds a hardened backend for Dhanu Tech.
+Production-hardened backend for the Dhanu Tech site.
 
-## Features implemented
+## Security controls implemented
 
-- Input validation with `express-validator`.
-- SQL injection protection with parameterized SQLite queries (`?` placeholders).
-- CSRF protection using per-session token (`/api/csrf-token` + `x-csrf-token` header).
-- Output sanitization (HTML escaping) to prevent reflected/stored XSS execution.
-- Authentication with bcrypt password hashing (`bcryptjs`, 12 rounds).
-- Failed login logging in `auth-failures.log`.
-- HTTPS support for development with self-signed cert files in `certs/`.
+- **Input validation and normalization** (`express-validator`, Unicode NFKC normalization, strict username whitelist).
+- **SQL injection prevention** via parameterized SQLite queries (`?` placeholders).
+- **CSRF protection** using session token + double-submit cookie (`dhanu.csrf`) and safe constant-time comparisons.
+- **XSS mitigation** with output encoding (`escapeHtml`) for user-controlled output.
+- **Authentication hardening**:
+  - bcrypt hashing (12 rounds)
+  - session ID regeneration on login (fixation defense)
+  - rolling session expiration
+  - account lockout after repeated failures
+  - incremental login backoff and IP+username throttling
+- **Headers hardening** with Helmet:
+  - CSP
+  - Referrer-Policy
+  - Permissions-Policy
+  - X-Frame-Options DENY
+  - X-Content-Type-Options nosniff
+  - HSTS in production
+- **Abuse protection**: global rate limiter + auth-specific rate limiters + strict payload size limits.
+- **Operational security**:
+  - structured JSON logging
+  - request IDs
+  - sanitized log fields (log injection prevention)
+  - structured errors without stack traces in production
+- **Database hardening**:
+  - secure DB file permissions where supported
+  - username index
+  - WAL mode + FK enforcement
+- **HTTPS support**:
+  - local self-signed cert bootstrap (`npm run gen:cert`)
+  - production proxy-ready HTTPS redirect and trust-proxy support
 
-## OWASP Top 10 coverage
+## OWASP Top 10 mapping
 
-- **A01 Broken Access Control**: `requireAuth` middleware for protected routes.
-- **A02 Cryptographic Failures**: bcrypt hashes, secure session cookie defaults.
-- **A03 Injection**: parameterized DB queries + strict input validation.
-- **A04 Insecure Design**: CSRF + session-bound token model.
-- **A05 Security Misconfiguration**: Helmet headers, CSP, disable `x-powered-by`.
-- **A06 Vulnerable Components**: limited to maintained mainstream packages.
-- **A07 Identification/Auth Failures**: session auth, rate limiting, failed-auth logging.
-- **A08 Software/Data Integrity Failures**: controlled payload size and strict parsers.
-- **A09 Security Logging/Monitoring**: auth-failure audit log.
-- **A10 SSRF**: no server-side outbound URL fetch endpoints exposed.
+- **A01 Broken Access Control**: authenticated route guard (`requireAuth`).
+- **A02 Cryptographic Failures**: bcrypt password hashing, strong-session-secret enforcement, HSTS in production.
+- **A03 Injection**: input whitelist + parameterized queries + payload caps.
+- **A04 Insecure Design**: lockout/backoff controls and CSRF design.
+- **A05 Security Misconfiguration**: hardened Helmet headers and secure cookie policies.
+- **A06 Vulnerable/Outdated Components**: mainstream maintained packages only.
+- **A07 Identification & Authentication Failures**: regeneration, throttling, lockout, secure sessions.
+- **A08 Software/Data Integrity Failures**: strict parsing and trusted static serving.
+- **A09 Security Logging & Monitoring Failures**: structured request/auth/error logs.
+- **A10 SSRF**: no server-side URL fetch features exposed.
 
 ## Local usage
 
 ```bash
 npm install
-npm run gen:cert   # optional for HTTPS
+npm run gen:cert   # optional for local HTTPS
 npm start
 npm test
 ```
 
-## Production HTTPS reference
+## Production notes
 
-Use a reverse proxy (Nginx/Caddy/ALB) with managed TLS certificates (Let's Encrypt or cloud-managed certs). Keep app behind proxy and enforce HSTS.
+- Set `NODE_ENV=production` and strong `SESSION_SECRET` (>=32 chars).
+- Deploy behind TLS reverse proxy (Nginx/Caddy/Cloud LB) and forward `X-Forwarded-Proto`.
+- Keep DB file out of web-accessible directories and enforce least-privilege FS permissions.
