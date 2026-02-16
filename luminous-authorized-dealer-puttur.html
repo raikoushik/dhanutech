@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luminous Dealer in Puttur | DhanuTech</title>
+  <meta name="description" content="Authorised Luminous inverter and battery dealer in Puttur. Call or WhatsApp DhanuTech for genuine products, warranty and installation.">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    main{margin-top:90px;padding:1rem;max-width:1100px;margin-inline:auto}
+    .card{background:#fff;border:1px solid #dbe2ea;border-radius:14px;padding:1rem;margin-bottom:1rem}
+    .hero{background:#eff6ff}
+    .cta-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.8rem}
+    .badge-grid,.why-grid,.trust-grid{display:grid;gap:.6rem;grid-template-columns:1fr}
+    .badge{background:#ecfdf3;border:1px solid #86efac;padding:.6rem;border-radius:10px;font-weight:600}
+    .mobile-sticky-cta{position:fixed;left:0;right:0;bottom:0;display:flex;z-index:9999}
+    .mobile-sticky-cta a{flex:1;padding:.85rem;color:#fff;text-align:center;text-decoration:none;font-weight:700}
+    .call-btn{background:#1e3a8a}.wa-btn{background:#16a34a}
+    input,select,button{width:100%;padding:.7rem;border:1px solid #cbd5e1;border-radius:8px;margin-bottom:.6rem}
+    .emergency{background:#b91c1c;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+    .emergency a{background:#fff;color:#b91c1c;text-decoration:none;padding:.5rem .8rem;border-radius:8px;font-weight:700}
+    @media(min-width:768px){.badge-grid,.why-grid,.trust-grid{grid-template-columns:repeat(3,1fr)}.mobile-sticky-cta{max-width:360px;left:auto;right:14px;bottom:14px;border-radius:10px;overflow:hidden}}
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card hero">
+      <p><strong>Authorised Luminous Dealer • Puttur • Dakshina Kannada • Karnataka</strong></p>
+      <h1>Luminous Inverter Dealer in Puttur You Can Trust</h1>
+      <p>DhanuTech supplies genuine Luminous inverters and batteries with local installation, service, and warranty support.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="tel:+919591555095">Call Now</a>
+        <a class="btn btn-whatsapp" href="https://wa.me/919591555095?text=Need%20Luminous%20inverter%20in%20Puttur" target="_blank" rel="noopener">WhatsApp Now</a>
+        <a class="btn btn-secondary" href="contact.html">Get Quote</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Trust Badges</h2>
+      <div class="badge-grid">
+        <div class="badge">✅ Authorised Luminous Dealer</div>
+        <div class="badge">✅ Genuine Product & Bill</div>
+        <div class="badge">✅ On-site Installation</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Warranty & Service Support</h2>
+      <h3>Complete peace of mind</h3>
+      <ul>
+        <li>Manufacturer-backed warranty on eligible models.</li>
+        <li>Local service coordination in and around Puttur.</li>
+        <li>Priority support for repeat customers.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Why Buy Luminous from DhanuTech?</h2>
+      <div class="why-grid">
+        <article><h3>Correct Load Calculation</h3><p>We right-size your system based on home/office usage.</p></article>
+        <article><h3>Fast Support</h3><p>Local team for emergency breakdown response.</p></article>
+        <article><h3>Trusted Local Brand</h3><p>Serving Puttur customers with transparent pricing.</p></article>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Quick Callback Form</h2>
+      <form id="callbackForm">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="tel" name="phone" placeholder="Mobile Number" required pattern="[0-9]{10}">
+        <select name="service" required>
+          <option value="">Select Service</option>
+          <option>Luminous Inverter</option>
+          <option>Luminous Battery</option>
+          <option>UPS Repair in Puttur</option>
+        </select>
+        <button type="submit">Request Callback</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Free Inverter Load Calculation</h2>
+      <input id="loadWatts" type="number" placeholder="Enter total watt load">
+      <button type="button" onclick="calculateBackup()">Calculate</button>
+      <p id="calcResult" aria-live="polite"></p>
+    </section>
+
+    <section class="card emergency">
+      <p><strong>Emergency power failure in Puttur?</strong></p>
+      <a href="tel:+919591555095">Call Emergency Team</a>
+    </section>
+
+    <section class="card">
+      <h2>Trust & Authority</h2>
+      <div class="trust-grid">
+        <div><h3>12+ Years Experience</h3><p>Trusted since 2013.</p></div>
+        <div><h3>500+ Happy Customers</h3><p>Across homes and businesses.</p></div>
+        <div><h3>Coverage Areas</h3><p>Puttur, Sullia, Bantwal, Dakshina Kannada.</p></div>
+      </div>
+      <h3>Google Reviews</h3>
+      <iframe title="Google Reviews" loading="lazy" src="https://www.google.com/maps?q=Puttur+Karnataka&output=embed" width="100%" height="280" style="border:0;"></iframe>
+    </section>
+  </main>
+
+  <div class="mobile-sticky-cta" role="region" aria-label="Quick contact actions">
+    <a href="tel:+919591555095" class="call-btn">📞 Call</a>
+    <a href="https://wa.me/919591555095" class="wa-btn" target="_blank" rel="noopener">💬 WhatsApp</a>
+  </div>
+
+  <script defer>
+    document.getElementById('callbackForm')?.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const data = new FormData(e.target);
+      const msg = `Callback Request%0AName: ${encodeURIComponent(data.get('name'))}%0APhone: ${encodeURIComponent(data.get('phone'))}%0AService: ${encodeURIComponent(data.get('service'))}`;
+      window.open(`https://wa.me/919591555095?text=${msg}`, '_blank', 'noopener');
+    });
+    function calculateBackup(){
+      const watts = Number(document.getElementById('loadWatts').value || 0);
+      const recommendedVA = Math.ceil((watts / 0.8) / 100) * 100;
+      document.getElementById('calcResult').textContent = watts > 0 ? `Recommended inverter capacity: ${recommendedVA} VA.` : 'Please enter valid watts.';
+    }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {"@type":"LocalBusiness","name":"DhanuTech","telephone":"+91-9591555095","address":{"@type":"PostalAddress","addressLocality":"Puttur","addressRegion":"Karnataka","addressCountry":"IN"},"areaServed":["Puttur","Dakshina Kannada","Karnataka"],"url":"https://dhanutech.in"},
+      {"@type":"ElectricalContractor","name":"DhanuTech Electrical Services","areaServed":"Dakshina Kannada"},
+      {"@type":"ComputerRepair","name":"DhanuTech Laptop Service","areaServed":"Puttur"},
+      {"@type":"Product","name":"Luminous Zelio Inverter","brand":{"@type":"Brand","name":"Luminous"},"offers":{"@type":"Offer","priceCurrency":"INR","price":"14500","availability":"https://schema.org/InStock"}},
+      {"@type":"Product","name":"Luminous Tall Tubular Battery 220Ah","brand":{"@type":"Brand","name":"Luminous"},"offers":{"@type":"Offer","priceCurrency":"INR","price":"17800","availability":"https://schema.org/InStock"}},
+      {"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are you an authorised Luminous inverter dealer in Puttur?","acceptedAnswer":{"@type":"Answer","text":"Yes, DhanuTech is an authorised Luminous dealer in Puttur."}},{"@type":"Question","name":"Do you provide UPS repair in Puttur?","acceptedAnswer":{"@type":"Answer","text":"Yes, we provide UPS repair and maintenance in Puttur and nearby areas."}}]}
+    ]
+  }
+  </script>
+</body>
+</html>
