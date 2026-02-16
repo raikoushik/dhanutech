@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Technology insights, product updates, and industry knowledge from DhanuTech">
-    <title>Blog - DhanuTech</title>
+    <meta name="description" content="Read DhanuTech and Dhanu Computers guides for Luminous inverter care, UPS maintenance, laptop service and CCTV best practices in Puttur.">
+    <title>DhanuTech Puttur Blog | Luminous & Computer Tips</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Blog-specific styles */
@@ -85,6 +85,33 @@
             flex: 1;
         }
 
+        .blog-excerpt.is-collapsed {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 0.625rem;
+        }
+
+        .read-more-toggle {
+            align-self: flex-start;
+            background: transparent;
+            border: 0;
+            color: #2563eb;
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 0;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .read-more-toggle:hover {
+            color: #1d4ed8;
+        }
+
+
         .blog-footer {
             display: flex;
             gap: 0.5rem;
@@ -151,6 +178,7 @@
             
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html">Home</a></li>
+                <li><a href="dhanu-computers-puttur-karnataka.html">Dhanu Computers</a></li>
                 <li><a href="products.html">Products</a></li>
                 <li><a href="customization.html">Customization</a></li>
                 <li><a href="services.html">Services</a></li>
@@ -210,6 +238,7 @@
                         to understand camera types, key features, installation tips, and how to choose the right CCTV camera
                         for long-term safety and peace of mind.
                     </p>
+                    <button type="button" class="read-more-toggle" aria-expanded="false">Read more</button>
                     
                     <div class="blog-footer">
                         <a href="cctv-surveillance-systems-india.md" class="btn btn-whatsapp">
@@ -252,6 +281,7 @@
                         Learn how programmable logic controllers can improve efficiency, reduce errors, and provide 
                         better process control for packaging, material handling, and quality checks.
                     </p>
+                    <button type="button" class="read-more-toggle" aria-expanded="false">Read more</button>
                     
                     <div class="blog-footer">
                         <a href="https://wa.me/919591555095?text=Hi,%20I%20read%20your%20blog%20about%20PLC%20panels.%20I%27d%20like%20to%20know%20more" 
@@ -298,6 +328,7 @@
                         select the right inverter capacity, choose between tubular and lithium batteries, and understand 
                         warranty terms. Make an informed investment for reliable backup power.
                     </p>
+                    <button type="button" class="read-more-toggle" aria-expanded="false">Read more</button>
                     
                     <div class="blog-footer">
                         <a href="https://wa.me/919591555095?text=Hi,%20I%20read%20your%20blog%20about%20power%20backup.%20I%27d%20like%20a%20consultation" 
@@ -344,6 +375,7 @@
                         Understand grading systems, what to check before buying, warranty coverage, and how to get 
                         enterprise-quality machines at fraction of the cost for your team.
                     </p>
+                    <button type="button" class="read-more-toggle" aria-expanded="false">Read more</button>
                     
                     <div class="blog-footer">
                         <a href="https://wa.me/919591555095?text=Hi,%20I%20read%20about%20refurbished%20laptops.%20I%27d%20like%20to%20see%20current%20stock" 
@@ -390,6 +422,7 @@
                         lighting considerations, storage calculations, network security, and maintenance schedules to 
                         ensure your surveillance system provides complete protection.
                     </p>
+                    <button type="button" class="read-more-toggle" aria-expanded="false">Read more</button>
                     
                     <div class="blog-footer">
                         <a href="https://wa.me/919591555095?text=Hi,%20I%20read%20about%20CCTV%20setup%20mistakes.%20I%27d%20like%20a%20security%20audit" 
@@ -436,6 +469,7 @@
                         return generation, reconciliation, and filing. Learn about common errors to avoid and how proper 
                         setup from day one saves months of manual corrections.
                     </p>
+                    <button type="button" class="read-more-toggle" aria-expanded="false">Read more</button>
                     
                     <div class="blog-footer">
                         <a href="https://wa.me/919591555095?text=Hi,%20I%20need%20help%20with%20Tally%20setup%20for%20GST%20compliance" 
@@ -482,6 +516,7 @@
                         Star-Delta, and Variable Frequency Drive options. Learn when to use each method based on motor size, 
                         load type, and energy considerations for industrial applications.
                     </p>
+                    <button type="button" class="read-more-toggle" aria-expanded="false">Read more</button>
                     
                     <div class="blog-footer">
                         <a href="https://wa.me/919591555095?text=Hi,%20I%20need%20guidance%20on%20motor%20control%20panels%20for%20my%20facility" 
@@ -590,6 +625,41 @@
                     }, 100);
                 }
             }
+        });
+
+
+        // Read more / Read less toggle for blog excerpts (update-safe: uses in-structure buttons)
+        document.querySelectorAll('.blog-card').forEach((card, index) => {
+            const excerpt = card.querySelector('.blog-excerpt');
+            if (!excerpt) return;
+
+            const textLength = excerpt.textContent.trim().length;
+            let toggleBtn = card.querySelector('.read-more-toggle');
+
+            // Keep structure resilient for future copied cards
+            if (!toggleBtn) {
+                toggleBtn = document.createElement('button');
+                toggleBtn.type = 'button';
+                toggleBtn.className = 'read-more-toggle';
+                toggleBtn.textContent = 'Read more';
+                excerpt.insertAdjacentElement('afterend', toggleBtn);
+            }
+
+            if (textLength < 180) {
+                toggleBtn.style.display = 'none';
+                return;
+            }
+
+            excerpt.classList.add('is-collapsed');
+            excerpt.id = `blog-excerpt-${index + 1}`;
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            toggleBtn.setAttribute('aria-controls', excerpt.id);
+
+            toggleBtn.addEventListener('click', () => {
+                const isCollapsed = excerpt.classList.toggle('is-collapsed');
+                toggleBtn.textContent = isCollapsed ? 'Read more' : 'Read less';
+                toggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
+            });
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
