@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <path id="topArc" d="M 130 512 A 382 382 0 0 1 894 512"/>
+    <path id="bottomArc" d="M 894 512 A 382 382 0 0 1 130 512"/>
+  </defs>
+
+  <circle cx="512" cy="512" r="342" fill="none" stroke="#f58600" stroke-width="46"/>
+
+  <g fill="#ba1a00" font-family="Arial, Helvetica, sans-serif" font-weight="700" letter-spacing="6">
+    <text font-size="108">
+      <textPath href="#topArc" startOffset="50%" text-anchor="middle">DHANUTECH</textPath>
+    </text>
+    <text font-size="62">
+      <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">ONE STEP FOR DIGITAL LIFE</textPath>
+    </text>
+  </g>
+
+  <g fill="none" stroke="#ba1a00" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="275" y="336" width="470" height="290" rx="18"/>
+    <line x1="455" y1="698" x2="570" y2="698"/>
+  </g>
+  <path d="M 372 700 h 280 a 78 78 0 0 1 78 78 h -436 a 78 78 0 0 1 78 -78 z" fill="#ba1a00"/>
+
+  <g fill="none" stroke="#f58600" stroke-width="14">
+    <path d="M230 455 q63 -63 126 0"/>
+    <path d="M248 482 q45 -45 90 0"/>
+    <path d="M266 508 q27 -27 54 0"/>
+  </g>
+  <circle cx="292" cy="540" r="12" fill="#f58600"/>
+
+  <g fill="none" stroke="#f58600" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="420" y1="242" x2="740" y2="740"/>
+    <line x1="420" y1="242" x2="518" y2="562"/>
+    <line x1="505" y1="570" x2="734" y2="390"/>
+  </g>
+
+  <path d="M697 338 q123 82 72 223 q-36 92 0 176" fill="none" stroke="#ba1a00" stroke-width="30" stroke-linecap="round"/>
+  <path d="M610 307 q48 18 92 28" fill="none" stroke="#f58600" stroke-width="30" stroke-linecap="round"/>
+  <path d="M694 532 q91 -18 101 82" fill="none" stroke="#f58600" stroke-width="30" stroke-linecap="round"/>
+
+  <text x="512" y="772" text-anchor="middle" fill="#ba1a00" font-size="58" font-family="Arial, Helvetica, sans-serif">since 2013</text>
+</svg>
