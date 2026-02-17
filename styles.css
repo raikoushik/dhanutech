@@ -1,4 +1,4 @@
-/* DhanuTech Shared Styles - styles.css */
+/* Dhanu Computers Shared Styles - styles.css */
 
 * {
     margin: 0;
@@ -412,40 +412,40 @@ footer {
         padding: 1rem;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    
+
     .nav-links.active {
         display: flex;
     }
-    
+
     .mobile-menu-btn {
         display: block;
     }
-    
+
     .page-header h1 {
         font-size: 2rem;
     }
-    
+
     .page-header p {
         font-size: 1rem;
     }
-    
+
     .grid-2,
     .grid-3,
     .grid-4 {
         grid-template-columns: 1fr;
     }
-    
+
     .section-title h2 {
         font-size: 2rem;
     }
-    
+
     .whatsapp-float {
         bottom: 20px;
         right: 20px;
         width: 56px;
         height: 56px;
     }
-    
+
     .whatsapp-float svg {
         width: 28px;
         height: 28px;
@@ -973,7 +973,7 @@ footer {
     50% { transform: translateX(-8px) skewX(1deg); }
 }
 
-/* Dhanu Tech Bee - GSAP premium override */
+/* Dhanu Computers Bee - GSAP premium override */
 .bee-env,
 .bee-particle-canvas,
 .bee-assistant,

@@ -1,4 +1,4 @@
-# DhanuTech Local SEO & Lead Generation Implementation Playbook
+# Dhanu Computers Local SEO & Lead Generation Implementation Playbook
 
 ## Task 1: Complete SEO & Local Domination Strategy
 
@@ -6,11 +6,11 @@
 
 | Page | Title Tag (<60) | Meta Description (<160) | H1 | H2 | H3 |
 |---|---|---|---|---|---|
-| Home | `Luminous Inverter Dealer in Puttur \| DhanuTech` | `Authorised Luminous inverter & battery dealer in Puttur. UPS, CCTV, laptop service & control panels across Dakshina Kannada.` | `Luminous Authorised Dealer in Puttur, Karnataka` | `Power Backup Solutions in Dakshina Kannada`; `Laptop, CCTV & Electrical Services` | `UPS Repair in Puttur`; `Battery Replacement Near You`; `Book Free Site Inspection` |
-| Products | `Luminous Inverters & Batteries in Puttur \| DhanuTech` | `Buy Luminous inverters, batteries, UPS systems and laptops from DhanuTech, trusted local dealer in Puttur, Karnataka.` | `Buy Inverters, Batteries & UPS in Puttur` | `Luminous Inverter Range`; `Tubular Battery Range`; `Commercial UPS Solutions` | `2kVA Home UPS`; `220Ah Tall Tubular`; `Warranty & Installation` |
+| Home | `Luminous Inverter Dealer in Puttur \| Dhanu Computers` | `Authorised Luminous inverter & battery dealer in Puttur. UPS, CCTV, laptop service & control panels across Dakshina Kannada.` | `Luminous Authorised Dealer in Puttur, Karnataka` | `Power Backup Solutions in Dakshina Kannada`; `Laptop, CCTV & Electrical Services` | `UPS Repair in Puttur`; `Battery Replacement Near You`; `Book Free Site Inspection` |
+| Products | `Luminous Inverters & Batteries in Puttur \| Dhanu Computers` | `Buy Luminous inverters, batteries, UPS systems and laptops from Dhanu Computers, trusted local dealer in Puttur, Karnataka.` | `Buy Inverters, Batteries & UPS in Puttur` | `Luminous Inverter Range`; `Tubular Battery Range`; `Commercial UPS Solutions` | `2kVA Home UPS`; `220Ah Tall Tubular`; `Warranty & Installation` |
 | Services | `UPS Repair, CCTV & Laptop Service in Puttur` | `Fast UPS repair, CCTV installation, laptop service and control panel works in Puttur and nearby Dakshina Kannada areas.` | `Trusted Technical Services in Puttur` | `UPS & Inverter Service`; `Laptop Sales & Repair`; `CCTV Installation`; `Electrical Automation` | `Emergency Power Failure Support`; `Annual Maintenance Plans` |
-| Contact | `Contact DhanuTech Puttur \| Call & WhatsApp Support` | `Call or WhatsApp DhanuTech for inverter, battery, UPS, CCTV, laptop and electrical services in Puttur, Karnataka.` | `Contact DhanuTech - Puttur` | `Visit Our Puttur Store`; `Quick Callback Form`; `Service Coverage Areas` | `Same-Day Response`; `Free Site Inspection` |
-| Blog | `Power Backup & Tech Tips Blog \| DhanuTech Puttur` | `Local guides on inverters, UPS maintenance, laptop care and CCTV planning for homes and businesses in Puttur.` | `DhanuTech Local Expert Blog` | `Inverter Buying Guides`; `UPS Maintenance Tips`; `Laptop & CCTV Advice` | `How to Choose Inverter Capacity`; `Battery Care Checklist` |
+| Contact | `Contact Dhanu Computers Puttur \| Call & WhatsApp Support` | `Call or WhatsApp Dhanu Computers for inverter, battery, UPS, CCTV, laptop and electrical services in Puttur, Karnataka.` | `Contact Dhanu Computers - Puttur` | `Visit Our Puttur Store`; `Quick Callback Form`; `Service Coverage Areas` | `Same-Day Response`; `Free Site Inspection` |
+| Blog | `Power Backup & Tech Tips Blog \| Dhanu Computers Puttur` | `Local guides on inverters, UPS maintenance, laptop care and CCTV planning for homes and businesses in Puttur.` | `Dhanu Computers Local Expert Blog` | `Inverter Buying Guides`; `UPS Maintenance Tips`; `Laptop & CCTV Advice` | `How to Choose Inverter Capacity`; `Battery Care Checklist` |
 
 ### Local keyword placement (must-use blocks)
 - Primary intro paragraph on each page should include: `Puttur`, `Dakshina Kannada`, and `Karnataka` once naturally.
@@ -77,7 +77,7 @@ Each page should include:
 <section class="luminous-hero" id="luminous-dealer">
   <p class="eyebrow">Authorised Luminous Dealer - Puttur, Karnataka</p>
   <h1>Luminous Inverter Dealer in Puttur You Can Trust</h1>
-  <p>Get genuine Luminous inverters, batteries, installation and warranty support from DhanuTech in Dakshina Kannada.</p>
+  <p>Get genuine Luminous inverters, batteries, installation and warranty support from Dhanu Computers in Dakshina Kannada.</p>
   <div class="cta-row">
     <a class="btn btn-primary" href="tel:+919591555095">Call Now</a>
     <a class="btn btn-whatsapp" href="https://wa.me/919591555095?text=Need%20Luminous%20inverter%20in%20Puttur" target="_blank" rel="noopener">WhatsApp Now</a>
@@ -96,13 +96,13 @@ Each page should include:
   <h2>Luminous Warranty & Service Support</h2>
   <ul>
     <li>Manufacturer warranty on inverter & battery models</li>
-    <li>Doorstep service coordination from DhanuTech</li>
+    <li>Doorstep service coordination from Dhanu Computers</li>
     <li>Priority support for Puttur and nearby locations</li>
   </ul>
 </section>
 
 <section>
-  <h2>Why Buy Luminous from DhanuTech?</h2>
+  <h2>Why Buy Luminous from Dhanu Computers?</h2>
   <div class="why-grid">
     <article><h3>Correct Load Sizing</h3><p>Free load assessment to avoid under/over sizing.</p></article>
     <article><h3>Fast Local Support</h3><p>Rapid response for homes, shops and offices.</p></article>
@@ -171,7 +171,7 @@ Each page should include:
 </section>
 
 <section class="emergency-banner">
-  <p><strong>Power Failure Emergency?</strong> Call DhanuTech now for same-day support in Puttur.</p>
+  <p><strong>Power Failure Emergency?</strong> Call Dhanu Computers now for same-day support in Puttur.</p>
   <a href="tel:+919591555095">Emergency Call</a>
 </section>
 ```
@@ -216,7 +216,7 @@ function calculateBackup() {
     {
       "@type":"LocalBusiness",
       "@id":"https://dhanutech.in/#localbusiness",
-      "name":"DhanuTech",
+      "name":"Dhanu Computers",
       "image":"https://dhanutech.in/logo.png",
       "telephone":"+91-9591555095",
       "address":{"@type":"PostalAddress","addressLocality":"Puttur","addressRegion":"Karnataka","addressCountry":"IN"},
@@ -226,14 +226,14 @@ function calculateBackup() {
     {
       "@type":"ElectricalContractor",
       "@id":"https://dhanutech.in/#electrical",
-      "name":"DhanuTech Electrical & Automation",
+      "name":"Dhanu Computers Electrical & Automation",
       "serviceType":["Electrical control panels","Automation","UPS wiring"],
       "areaServed":"Dakshina Kannada"
     },
     {
       "@type":"ComputerRepair",
       "@id":"https://dhanutech.in/#computerrepair",
-      "name":"DhanuTech Laptop Service",
+      "name":"Dhanu Computers Laptop Service",
       "serviceType":["Laptop repair","Laptop upgrades","Chip-level diagnostics"],
       "areaServed":"Puttur"
     },
@@ -254,7 +254,7 @@ function calculateBackup() {
     {
       "@type":"FAQPage",
       "mainEntity":[
-        {"@type":"Question","name":"Are you an authorised Luminous dealer in Puttur?","acceptedAnswer":{"@type":"Answer","text":"Yes, DhanuTech is an authorised Luminous dealer in Puttur with genuine products and warranty support."}},
+        {"@type":"Question","name":"Are you an authorised Luminous dealer in Puttur?","acceptedAnswer":{"@type":"Answer","text":"Yes, Dhanu Computers is an authorised Luminous dealer in Puttur with genuine products and warranty support."}},
         {"@type":"Question","name":"Do you provide UPS repair in Puttur?","acceptedAnswer":{"@type":"Answer","text":"Yes, we provide on-site and workshop UPS diagnostics and repair services in Puttur and nearby areas."}}
       ]
     }
@@ -277,9 +277,9 @@ function calculateBackup() {
 <section>
   <h2>Google Reviews</h2>
   <iframe
-    title="Google Reviews DhanuTech"
+    title="Google Reviews Dhanu Computers"
     loading="lazy"
-    src="https://www.google.com/maps?q=DhanuTech+Puttur&output=embed"
+    src="https://www.google.com/maps?q=Dhanu Computers+Puttur&output=embed"
     width="100%" height="300" style="border:0;" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </section>
 

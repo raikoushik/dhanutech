@@ -6,7 +6,7 @@
         (navigator.deviceMemory && navigator.deviceMemory <= 2)
     );
 
-    const WA_LINK = 'https://wa.me/919787959595?text=' + encodeURIComponent("Hi Dhanu Tech, I'd like to discuss an engineering requirement.");
+    const WA_LINK = 'https://wa.me/919787959595?text=' + encodeURIComponent("Hi Dhanu Computers, I'd like to discuss an engineering requirement.");
 
     const state = {
         x: 0,
@@ -54,7 +54,7 @@
         const el = document.createElement('button');
         el.type = 'button';
         el.className = 'honeybee-assistant';
-        el.setAttribute('aria-label', 'Dhanu Tech helper bee');
+        el.setAttribute('aria-label', 'Dhanu Computers helper bee');
         el.setAttribute('aria-haspopup', 'true');
         el.setAttribute('aria-expanded', 'false');
         el.innerHTML = `
@@ -104,7 +104,7 @@
     function createTooltip() {
         const node = document.createElement('aside');
         node.className = 'honeybee-tooltip';
-        node.innerHTML = '<p class="honeybee-tooltip-text">Need help? Ask an Engineer 🐝</p><a class="honeybee-tip-link" href="contact.html">Talk to Dhanu Tech</a>';
+        node.innerHTML = '<p class="honeybee-tooltip-text">Need help? Ask an Engineer 🐝</p><a class="honeybee-tip-link" href="contact.html">Talk to Dhanu Computers</a>';
         return node;
     }
 
@@ -174,7 +174,7 @@
     function buildAnnouncements() {
         const page = (document.title || '').toLowerCase();
         const list = [
-            { text: 'Welcome to Dhanu Tech — your engineering solutions partner.', href: 'index.html', cta: 'Home' },
+            { text: 'Welcome to Dhanu Computers — your engineering solutions partner.', href: 'index.html', cta: 'Home' },
             { text: 'Need system builds, electrical integration or support? Explore Services.', href: 'services.html', cta: 'Services' },
             { text: 'For quick consultation, message our engineer team on WhatsApp.', href: WA_LINK, cta: 'WhatsApp', external: true }
         ];
@@ -502,7 +502,7 @@
 
         bee.addEventListener('click', () => {
             toggleActionMenu();
-            if (state.menuOpen) showAnnouncement('Hi! I am your Dhanu Tech bee agent. How can I help?');
+            if (state.menuOpen) showAnnouncement('Hi! I am your Dhanu Computers bee agent. How can I help?');
             if (!LOW_END) {
                 emitSparkle(state.x + 30, state.y + 44);
                 emitSparkle(state.x + 50, state.y + 44);
