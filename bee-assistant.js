@@ -6,7 +6,7 @@
         (navigator.deviceMemory && navigator.deviceMemory <= 2)
     );
 
-    const WA_LINK = 'https://wa.me/919787959595?text=' + encodeURIComponent("Hi Dhanu Computers, I'd like to discuss an engineering requirement.");
+    const WA_LINK = 'https://wa.me/919591555095?text=' + encodeURIComponent("Hi Dhanu Computers, I'd like to discuss an engineering requirement.");
 
     const state = {
         x: 0,
@@ -258,24 +258,29 @@
 
     function setupAudio() {
         if (audioCtx) return;
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        buzzOsc = audioCtx.createOscillator();
-        const buzzOsc2 = audioCtx.createOscillator();
-        buzzGain = audioCtx.createGain();
-        buzzGain.gain.value = 0;
-        buzzOsc.type = 'sawtooth';
-        buzzOsc.frequency.value = 210;
-        buzzOsc2.type = 'triangle';
-        buzzOsc2.frequency.value = 228;
-        buzzOsc.connect(buzzGain);
-        buzzOsc2.connect(buzzGain);
-        buzzGain.connect(audioCtx.destination);
-        buzzOsc.start();
-        buzzOsc2.start();
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            buzzOsc = audioCtx.createOscillator();
+            const buzzOsc2 = audioCtx.createOscillator();
+            buzzGain = audioCtx.createGain();
+            buzzGain.gain.value = 0;
+            buzzOsc.type = 'sawtooth';
+            buzzOsc.frequency.value = 210;
+            buzzOsc2.type = 'triangle';
+            buzzOsc2.frequency.value = 228;
+            buzzOsc.connect(buzzGain);
+            buzzOsc2.connect(buzzGain);
+            buzzGain.connect(audioCtx.destination);
+            buzzOsc.start();
+            buzzOsc2.start();
+        } catch (e) {
+            console.warn('Web Audio API not available:', e.message);
+            audioCtx = null;
+        }
     }
 
     function updateAudio() {
-        if (!buzzGain) return;
+        if (!audioCtx || !buzzGain) return;
         const target = state.muted || state.hidden ? 0 : 0.007;
         buzzGain.gain.value += (target - buzzGain.gain.value) * 0.08;
         if (buzzOsc) {

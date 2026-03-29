@@ -1,5 +1,12 @@
 /* Dhanu Computers Shared Styles - styles.css */
 
+:root {
+    /* CSS Variables for bee-assistant */
+    --wing-flutter: 0deg;
+    --dx: 0px;
+    --sparkle-size: 12px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -461,6 +468,13 @@ footer {
         box-shadow: 0 0 20px rgba(37, 99, 235, 0.8);
     }
 }
+
+/* ===================================================================
+   DEPRECATED BEE STYLES (Lines 479-1278)
+   These old .bee-assistant styles are no longer in use.
+   The active bee assistant uses .honeybee-assistant (starting line 1279).
+   Kept for reference but should be removed in future cleanup.
+   =================================================================== */
 
 /* Bumble Bee Assistant */
 .bee-assistant {
@@ -1658,4 +1672,29 @@ footer {
     .honeybee-controls { left: 10px; bottom: 12px; }
     .honeybee-tooltip { max-width: 196px; }
     .honeybee-nature-decor { transform: scale(.62); transform-origin: bottom right; right: -22px; bottom: 56px; }
+}
+
+/* Contact Page Utility Classes */
+.section-title-spaced {
+    margin-top: 4rem;
+}
+
+.quick-response-box {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-top: 3rem;
+}
+
+.quick-response-box h3 {
+    color: #92400e;
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+}
+
+.quick-response-box p {
+    color: #78350f;
+    font-size: 1.0625rem;
+    line-height: 1.7;
 }

@@ -1,11 +1,15 @@
 """Generate PNG + favicon assets from SVG logo files.
+
+Usage: Run from repository root: python scripts/generate_logo_assets.py
 Requires: playwright with firefox available.
 """
 from pathlib import Path
 import struct
 from playwright.sync_api import sync_playwright
 
-root = Path(__file__).parent
+# Script is in scripts/ directory, logo files are in assets/logo/
+# Path resolution works when script is run from repository root or scripts directory
+root = Path(__file__).parent.parent / "assets" / "logo"
 
 with sync_playwright() as p:
     browser = p.firefox.launch()
